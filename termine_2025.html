@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kita-Termine 2025</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f9fafb;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #0056b3;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    header a {
+      color: #fff;
+      text-decoration: underline;
+    }
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .event {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s ease;
+    }
+    .event:hover {
+      transform: translateY(-3px);
+    }
+    .event h3 {
+      margin-top: 0;
+      color: #0056b3;
+      font-size: 1.1rem;
+    }
+    .event p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+    .buttons {
+      margin-top: 10px;
+    }
+    .buttons a {
+      display: inline-block;
+      margin-right: 10px;
+      margin-top: 8px;
+      background: #0056b3;
+      color: #fff;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      font-size: 0.9rem;
+    }
+    .buttons a:hover {
+      background: #003f82;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #eee;
+      margin-top: 30px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Kita-Termine 2025</h1>
+  <p>
+    📆 <a href="#" id="ical-feed-link">Alle Termine als iCal abonnieren</a>
+  </p>
+</header>
+
+<main id="event-list"></main>
+
+<footer>
+  © Kita Musternamen · Stand: Oktober 2025
+</footer>
+
+<script>
+const events = [
+  { title: "Neujahrskonzert", start: "2025-01-25T15:00:00", end: "2025-01-25T17:00:00" },
+  { title: "Elternabend Flötenfohlen", start: "2025-02-05T18:00:00", end: "2025-02-05T19:00:00" },
+  { title: "Elternabend Trompetentiger", start: "2025-02-06T18:00:00", end: "2025-02-06T19:00:00" },
+  { title: "Elternabend Klangkobolde", start: "2025-02-12T18:00:00", end: "2025-02-12T19:00:00" },
+  { title: "Elternabend Klavierschildkröten", start: "2025-02-13T18:00:00", end: "2025-02-13T19:00:00" },
+  { title: "Elternrat", start: "2025-02-19T18:00:00", end: "2025-02-19T19:00:00" },
+  { title: "Fasching", start: "2025-02-19", end: "2025-02-19" },
+  { title: "Kita geschlossen! Konzepttag", start: "2025-02-21", end: "2025-02-21" },
+  { title: "Elternabend Melodiezauberer", start: "2025-02-27T18:00:00", end: "2025-02-27T19:00:00" },
+  { title: "Elternabend Musikwichtel", start: "2025-03-06T18:00:00", end: "2025-03-06T19:00:00" },
+  { title: "Kita geschlossen! Konzepttag", start: "2025-04-07", end: "2025-04-07" },
+  { title: "Kita geschlossen! Regenerationstag", start: "2025-05-02", end: "2025-05-02" },
+  { title: "Elternrat", start: "2025-05-21T18:00:00", end: "2025-05-21T19:00:00" },
+  { title: "Kita geschlossen! Betriebsausflug", start: "2025-06-20", end: "2025-06-20" },
+  { title: "Sommerfest (Betreuung bis 13 Uhr)", start: "2025-06-27T15:00:00", end: "2025-06-27T17:00:00" },
+  { title: "Verabschiedung Brückenjahr", start: "2025-07-04", end: "2025-07-04" },
+  { title: "Kita geschlossen! Sommerschließzeit", start: "2025-08-04", end: "2025-08-15" },
+  { title: "Elternabend Flötenfohlen", start: "2025-09-10T18:00:00", end: "2025-09-10T19:00:00" },
+  { title: "Elternabend Trompetentiger", start: "2025-09-11T18:00:00", end: "2025-09-11T19:00:00" },
+  { title: "Elternabend Klavierschildkröten", start: "2025-09-17T18:00:00", end: "2025-09-17T19:00:00" },
+  { title: "Elternabend Melodiezauberer & Musikwichtel & Klangkobolde", start: "2025-09-18T18:00:00", end: "2025-09-18T19:00:00" },
+  { title: "Elternrat", start: "2025-09-24T18:00:00", end: "2025-09-24T19:00:00" },
+  { title: "Kita geschlossen! Tag der mittelbaren Pädagogik", start: "2025-09-26", end: "2025-09-26" },
+  { title: "Kita geschlossen! Regenerationstag", start: "2025-10-06", end: "2025-10-06" },
+  { title: "Herbstbasteln Klavierschildkröten", start: "2025-11-04T15:00:00", end: "2025-11-04T17:00:00" },
+  { title: "Herbstbasteln Trompetentiger", start: "2025-11-05T15:00:00", end: "2025-11-05T17:00:00" },
+  { title: "Herbstbasteln Flötenfohlen", start: "2025-11-06T15:00:00", end: "2025-11-06T17:00:00" },
+  { title: "Info-Nachmittag Brückenjahr", start: "2025-11-11T15:00:00", end: "2025-11-11T17:00:00" },
+  { title: "Elternrat", start: "2025-11-12T18:00:00", end: "2025-11-12T19:00:00" },
+  { title: "Kita geschlossen! Tag der Hamburger Richtlinien", start: "2025-11-14", end: "2025-11-14" },
+  { title: "Lichterfest", start: "2025-11-21T18:00:00", end: "2025-11-21T19:00:00" },
+  { title: "Adventssingen Musikwichtel & Klavierschildkröten", start: "2025-12-09T18:00:00", end: "2025-12-09T19:00:00" },
+  { title: "Adventssingen Melodiezauberer & Flötenfohlen", start: "2025-12-10T18:00:00", end: "2025-12-10T19:00:00" },
+  { title: "Adventssingen Klangkobolde & Trompetentiger", start: "2025-12-11T18:00:00", end: "2025-12-11T19:00:00" },
+  { title: "Kita geschlossen! Winterschließzeit", start: "2025-12-24", end: "2026-01-02" }
+];
+
+function formatDateForGoogle(dateStr) {
+  return dateStr.replace(/[-:]/g, "").split(".")[0];
+}
+
+function createICSContent(ev) {
+  const start = ev.start.includes("T") ? ev.start : ev.start + "T00:00:00";
+  const end = ev.end.includes("T") ? ev.end : ev.end + "T23:59:00";
+  return `BEGIN:VEVENT
+UID:${Date.now()}@kitatermine.de
+DTSTAMP:${formatDateForGoogle(new Date().toISOString())}
+DTSTART:${formatDateForGoogle(start)}
+DTEND:${formatDateForGoogle(end)}
+SUMMARY:${ev.title}
+END:VEVENT`;
+}
+
+function createGoogleUrl(ev) {
+  const start = ev.start.includes("T") ? formatDateForGoogle(ev.start) + "Z" : formatDateForGoogle(ev.start + "T00:00:00Z");
+  const end = ev.end.includes("T") ? formatDateForGoogle(ev.end) + "Z" : formatDateForGoogle(ev.end + "T23:59:00Z");
+  return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${start}/${end}&sf=true&output=xml`;
+}
+
+function createICS(ev) {
+  const ics = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kita-Termine//DE
+${createICSContent(ev)}
+END:VCALENDAR`;
+  return 'data:text/calendar;charset=utf8,' + encodeURIComponent(ics);
+}
+
+function createGlobalICS() {
+  const icsEvents = events.map(createICSContent).join("\n");
+  return `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kita-Termine//DE
+${icsEvents}
+END:VCALENDAR`;
+}
+
+const container = document.getElementById("event-list");
+events.forEach(ev => {
+  const div = document.createElement("div");
+  div.className = "event";
+  const startDate = new Date(ev.start);
+  const endDate = new Date(ev.end);
+  const sameDay = startDate.toDateString() === endDate.toDateString();
+  const datum = sameDay
+    ? startDate.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" })
+    : `${startDate.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })} – ${endDate.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" })}`;
+  const zeit = ev.start.includes("T")
+    ? `${startDate.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })} – ${endDate.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" })}`
+    : "ganztägig";
+
+  div.innerHTML = `
+    <h3>${ev.title}</h3>
+    <p><strong>Datum:</strong> ${datum}</p>
+    <p><strong>Uhrzeit:</strong> ${zeit}</p>
+    <div class="buttons">
+      <a href="${createICS(ev)}" download="${ev.title.replace(/\s+/g,'_')}.ics">📅 iCal</a>
+      <a href="${createGoogleUrl(ev)}" target="_blank">📆 Google</a>
+    </div>
+  `;
+  container.appendChild(div);
+});
+
+document.getElementById("ical-feed-link").href =
+  "data:text/calendar;charset=utf8," + encodeURIComponent(createGlobalICS());
+</script>
+</body>
+</html>
