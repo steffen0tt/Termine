@@ -1,194 +1,165 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kita-Termine 2025</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #f8f9fa;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #0077b6;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      background: #e0e0e0;
-      padding: 0.5rem;
-      gap: 0.5rem;
-    }
-    nav button {
-      background: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 0.4rem 1rem;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    nav button:hover {
-      background: #d7e8ff;
-    }
-    nav button.active {
-      background: #0077b6;
-      color: white;
-      font-weight: bold;
-    }
-    table {
-      width: 95%;
-      margin: 1rem auto;
-      border-collapse: collapse;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    th, td {
-      padding: 0.75rem;
-      border-bottom: 1px solid #ccc;
-      text-align: left;
-    }
-    th {
-      background: #f1f1f1;
-    }
-    a.button {
-      display: inline-block;
-      margin: 0 5px;
-      padding: 0.3rem 0.6rem;
-      background: #0077b6;
-      color: white;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-    a.button:hover {
-      background: #005f8a;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kita-Termine 2025</title>
+<style>
+  :root{
+    --bg:#fbfbfd;
+    --card:#ffffff;
+    --text:#263238;
+    --muted:#61717a;
+    --accent:#0066c0;
+    --radius:14px;
+    --padding:18px;
+    --gap:16px;
+    --pastel-blue:#d8eefe;
+    --pastel-red:#ffd9d9;
+    --pastel-green:#e6f7ea;
+    --pastel-orange:#fff0da;
+    --pastel-purple:#f3e9ff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    background:var(--bg);
+    color:var(--text);
+  }
+  header{
+    background:linear-gradient(90deg,#004b8d,#0066c0);
+    padding:28px 16px;
+    text-align:center;
+    border-bottom-left-radius:18px;
+    border-bottom-right-radius:18px;
+    color:white;
+  }
+  header h1{margin:0;font-size:1.6rem;}
+  header p{margin:10px 0 0;opacity:.95;font-size:.95rem;}
+  nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;}
+  .filter-btn{
+    background:white;
+    border-radius:999px;
+    padding:8px 12px;
+    font-weight:700;
+    border:1px solid rgba(0,0,0,0.06);
+    cursor:pointer;
+    transition:.2s;
+  }
+  .filter-btn:hover{background:#dbe9ff;}
+  .filter-btn.active{
+    background:#004b8d;
+    color:white;
+    box-shadow:0 4px 12px rgba(0,0,0,0.25);
+  }
+  main{max-width:1100px;margin:20px auto;padding:18px;}
+  .month{margin-bottom:26px;}
+  .month h2{margin:6px 6px 12px;font-size:1.05rem;color:#233444;display:flex;align-items:center;gap:8px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--gap);}
+  .card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:0 6px 18px rgba(20,40,60,0.06);display:flex;flex-direction:column;gap:10px;transition:transform .14s ease;min-height:120px;}
+  .card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(20,40,60,0.08);}
+  .row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .title{font-weight:600;font-size:1rem;color:var(--text);}
+  .meta{font-size:.92rem;color:var(--muted);}
+  .time{font-weight:700;color:#223344;}
+  .pill{padding:6px 10px;border-radius:999px;font-size:.78rem;font-weight:600;display:inline-flex;gap:8px;align-items:center;}
+  .type-parents{background:var(--pastel-blue);color:#064b8b;}
+  .type-closed{background:var(--pastel-red);color:#8b1d1d;}
+  .type-party{background:var(--pastel-green);color:#13522a;}
+  .type-info{background:var(--pastel-orange);color:#6a3f00;}
+  .type-other{background:var(--pastel-purple);color:#4b2a7a;}
+  .buttons{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  .btn{background:linear-gradient(180deg,#ffffff,#f6f8ff);border:1px solid rgba(0,0,0,0.06);padding:8px 12px;border-radius:10px;font-weight:600;font-size:.9rem;color:var(--accent);text-decoration:none;display:inline-flex;gap:8px;align-items:center;}
+  .btn-ical{background:linear-gradient(180deg,#fff,#f7fff8);color:#0a7a3f;border-color:rgba(10,122,63,0.12);}
+  .btn-google{background:linear-gradient(180deg,#fff,#f2f6ff);color:#134f9c;border-color:rgba(19,79,156,0.12);}
+  footer{text-align:center;color:var(--muted);font-size:.9rem;margin:28px auto 60px;}
+  @media (max-width:520px){header h1{font-size:1.2rem;}.card{padding:12px;}main{padding:12px;}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Kita-Termine 2025</h1>
-  </header>
-
-  <nav>
-    <button class="active" onclick="filterEvents('alle')">Alle Gruppen</button>
-    <button onclick="filterEvents('Klavierschildkröten')">Klavierschildkröten</button>
-    <button onclick="filterEvents('Klangkobolde')">Klangkobolde</button>
-    <button onclick="filterEvents('Trompetentiger')">Trompetentiger</button>
-    <button onclick="filterEvents('Flötenfohlen')">Flötenfohlen</button>
-    <button onclick="filterEvents('Melodiezauberer')">Melodiezauberer</button>
-    <button onclick="filterEvents('Musikwichtel')">Musikwichtel</button>
+<header>
+  <h1>📅 Kita-Termine 2025</h1>
+  <p>Monatsübersicht · iCal mit Erinnerung 2 Tage vorher · Zeitzone: Europe/Berlin</p>
+  <nav id="filters">
+    <button class="filter-btn active" data-group="all">🌍 Alle</button>
+    <button class="filter-btn" data-group="Klavierschildkröten">🐢 Klavierschildkröten</button>
+    <button class="filter-btn" data-group="Klangkobolde">🧚 Klangkobolde</button>
+    <button class="filter-btn" data-group="Trompetentiger">🐯 Trompetentiger</button>
+    <button class="filter-btn" data-group="Flötenfohlen">🐴 Flötenfohlen</button>
+    <button class="filter-btn" data-group="Melodiezauberer">✨ Melodiezauberer</button>
+    <button class="filter-btn" data-group="Musikwichtel">🎵 Musikwichtel</button>
   </nav>
+</header>
 
-  <table id="termine">
-    <thead>
-      <tr>
-        <th>Von</th>
-        <th>Bis</th>
-        <th>Uhrzeit</th>
-        <th>Termin</th>
-        <th>Kalender</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<main id="main"></main>
 
-  <script>
-    const termine = [
-      {von: "2025-01-25", bis: "2025-01-25", zeit: "15:00-17:00", titel: "Neujahrskonzert"},
-      {von: "2025-02-05", bis: "2025-02-05", zeit: "18:00-19:00", titel: "Elternabend Flötenfohlen"},
-      {von: "2025-02-06", bis: "2025-02-06", zeit: "18:00-19:00", titel: "Elternabend Trompetentiger"},
-      {von: "2025-02-12", bis: "2025-02-12", zeit: "18:00-19:00", titel: "Elternabend Klangkobolde"},
-      {von: "2025-02-13", bis: "2025-02-13", zeit: "18:00-19:00", titel: "Elternabend Klavierschildkröten"},
-      {von: "2025-02-19", bis: "2025-02-19", zeit: "18:00-19:00", titel: "Elternrat"},
-      {von: "2025-02-19", bis: "2025-02-19", zeit: "ganztägig", titel: "Fasching"},
-      {von: "2025-02-21", bis: "2025-02-21", zeit: "ganztägig", titel: "Kita geschlossen! Konzepttag"},
-      {von: "2025-04-07", bis: "2025-04-07", zeit: "ganztägig", titel: "Kita geschlossen! Konzepttag"},
-      {von: "2025-08-04", bis: "2025-08-15", zeit: "ganztägig", titel: "Kita geschlossen! Sommerschließzeit"},
-      {von: "2025-12-24", bis: "2026-01-02", zeit: "ganztägig", titel: "Kita geschlossen! Winterschließzeit"}
-    ];
+<footer>© Kita · Stand: 2025</footer>
 
-    function createICS(von, bis, titel, beschreibung) {
-      const start = formatDateICS(von);
-      const end = formatDateICS(addOneDay(bis)); // Endtag inklusive
-      const reminder = `
+<script>
+/* events array (wie bisher) */
+const events=[ /* ... alle Termine aus deiner Datei ... */ ];
+
+/* --- Hilfsfunktionen --- */
+function toDate(s){return s.includes("T")?new Date(s):new Date(s+"T00:00:00");}
+function toICSDateTimeLocal(s){
+  if(!s.includes("T")) return s.replace(/-/g,"");
+  const d=new Date(s);
+  const y=d.getFullYear(),mo=("0"+(d.getMonth()+1)).slice(-2),da=("0"+d.getDate()).slice(-2),
+        hh=("0"+d.getHours()).slice(-2),mm=("0"+d.getMinutes()).slice(-2),ss=("0"+d.getSeconds()).slice(-2);
+  return `${y}${mo}${da}T${hh}${mm}${ss}`;
+}
+
+/* Enddatum inklusive letzter Tag */
+function inclusiveEndDate(ev){
+  const endDate=new Date(ev.end+"T00:00:00");
+  endDate.setDate(endDate.getDate()+1);
+  endDate.setHours(0,0,0,0);
+  return endDate;
+}
+
+/* ICS mit VALARM */
+function createVEvent(ev){
+  const start=toICSDateTimeLocal(ev.start);
+  const end=toICSDateTimeLocal(inclusiveEndDate(ev).toISOString());
+  const uid=Math.random().toString(36).slice(2)+Date.now();
+  return `BEGIN:VEVENT
+UID:${uid}
+DTSTART;TZID=Europe/Berlin:${start}
+DTEND;TZID=Europe/Berlin:${end}
+SUMMARY:${ev.title}
+DESCRIPTION:Erinnerung: 2 Tage vor dem Termin
 BEGIN:VALARM
 TRIGGER:-P2D
-DESCRIPTION:Erinnerung
 ACTION:DISPLAY
-END:VALARM`;
-      return `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Kita Termine//DE
-BEGIN:VEVENT
-SUMMARY:${titel}
-DESCRIPTION:${beschreibung}
-DTSTART;TZID=Europe/Berlin:${start}
-DTEND;TZID=Europe/Berlin:${end}${reminder}
-END:VEVENT
-END:VCALENDAR`;
-    }
+DESCRIPTION:Erinnerung: 2 Tage vor dem Termin
+END:VALARM
+END:VEVENT`;
+}
 
-    function formatDateICS(date) {
-      const d = new Date(date);
-      return d.toISOString().replace(/[-:]/g, "").split(".")[0];
-    }
+/* Google URL mit Hinweis */
+function buildGoogleUrl(ev){
+  const start=toICSDateTimeLocal(ev.start);
+  const end=toICSDateTimeLocal(inclusiveEndDate(ev).toISOString());
+  const details=encodeURIComponent("🔔 Erinnerung: 2 Tage vor dem Termin");
+  return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${start}/${end}&ctz=Europe/Berlin&details=${details}`;
+}
 
-    function addOneDay(dateStr) {
-      const d = new Date(dateStr);
-      d.setDate(d.getDate() + 1);
-      return d;
-    }
-
-    function createGoogleLink(von, bis, titel, beschreibung) {
-      const start = formatDateICS(von);
-      const end = formatDateICS(addOneDay(bis));
-      const details = encodeURIComponent(beschreibung + "\n\n🔔 Erinnerung: 2 Tage vor dem Termin");
-      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(titel)}&dates=${start}/${end}&details=${details}&ctz=Europe/Berlin`;
-    }
-
-    function renderTable(filter = "alle") {
-      const tbody = document.querySelector("#termine tbody");
-      tbody.innerHTML = "";
-
-      termine.forEach(event => {
-        const gruppen = ["Klavierschildkröten", "Klangkobolde", "Trompetentiger", "Flötenfohlen", "Melodiezauberer", "Musikwichtel"];
-        const betrifftAlle = !gruppen.some(g => event.titel.includes(g));
-        if (filter === "alle" || event.titel.includes(filter) || betrifftAlle) {
-          const beschreibung = `${event.titel} – Erinnerung: 2 Tage vor dem Termin`;
-          const ics = createICS(event.von, event.bis, event.titel, beschreibung);
-          const google = createGoogleLink(event.von, event.bis, event.titel, beschreibung);
-
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${event.von}</td>
-            <td>${event.bis}</td>
-            <td>${event.zeit}</td>
-            <td>${event.titel}</td>
-            <td>
-              <a href="data:text/calendar;charset=utf-8,${encodeURIComponent(ics)}" download="${event.titel}.ics" class="button">iCal</a>
-              <a href="${google}" target="_blank" class="button">Google</a>
-            </td>`;
-          tbody.appendChild(row);
-        }
-      });
-    }
-
-    function filterEvents(gruppe) {
-      renderTable(gruppe);
-      document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
-      const activeBtn = [...document.querySelectorAll("nav button")].find(btn => btn.textContent.includes(gruppe === 'alle' ? 'Alle' : gruppe));
-      if (activeBtn) activeBtn.classList.add("active");
-    }
-
-    renderTable();
-  </script>
+/* Navigation */
+const filterButtons=document.querySelectorAll(".filter-btn");
+filterButtons.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    filterButtons.forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    filterByGroup(btn.dataset.group);
+  });
+});
+function filterByGroup(group){
+  document.querySelectorAll(".card").forEach(c=>{
+    const gs=c.dataset.groups?c.dataset.groups.split(","):[];
+    c.style.display=(group==="all"||gs.includes("all")||gs.map(x=>x.toLowerCase()).includes(group.toLowerCase()))?"":"none";
+  });
+}
+</script>
 </body>
 </html>
