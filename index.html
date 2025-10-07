@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kita-Termine 2025</title>
+  <style>
+    body {
+      font-family: "Comic Sans MS", "Segoe UI", sans-serif;
+      background: #f9fafb;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: #ffecd1;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #444;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #fff8ef;
+      padding: 0.8rem;
+      border-bottom: 1px solid #eee;
+    }
+    nav button {
+      border: none;
+      border-radius: 1rem;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      background: #ffe8cc;
+      transition: 0.2s;
+      font-size: 0.95rem;
+    }
+    nav button:hover {
+      background: #ffd8a8;
+    }
+    nav button.active {
+      background: #ffa94d;
+      color: #fff;
+      box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+    .month-section {
+      margin: 2rem auto;
+      max-width: 900px;
+      padding: 0 1rem;
+    }
+    h2 {
+      border-bottom: 2px solid #ffd8a8;
+      padding-bottom: 0.3rem;
+      color: #444;
+    }
+    .event-card {
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    .event-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+    }
+    .event-time {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 0.5rem;
+    }
+    .event-actions a {
+      display: inline-block;
+      margin-right: 0.5rem;
+      text-decoration: none;
+      color: #fff;
+      background: #69db7c;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.6rem;
+      font-size: 0.85rem;
+    }
+    .event-actions a.google {
+      background: #4285F4;
+    }
+    .event-actions a:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <header>📅 Kita-Termine 2025</header>
+  <nav id="groupNav">
+    <button class="active" data-group="alle">🌍 Alle Gruppen</button>
+    <button data-group="Klavierschildkröten">🐢 Klavierschildkröten</button>
+    <button data-group="Klangkobolde">🧚‍♀️ Klangkobolde</button>
+    <button data-group="Trompetentiger">🐯 Trompetentiger</button>
+    <button data-group="Flötenfohlen">🐴 Flötenfohlen</button>
+    <button data-group="Melodiezauberer">✨ Melodiezauberer</button>
+    <button data-group="Musikwichtel">🎵 Musikwichtel</button>
+  </nav>
+  <div id="eventContainer"></div>
+
+  <script>
+    const events = [
+      { title: "Neujahrskonzert", start: "2025-01-25", end: "2025-01-25", time: "15:00–17:00" },
+      { title: "Elternabend Flötenfohlen", start: "2025-02-05", end: "2025-02-05", time: "18:00–19:00" },
+      { title: "Elternabend Trompetentiger", start: "2025-02-06", end: "2025-02-06", time: "18:00–19:00" },
+      { title: "Elternabend Klangkobolde", start: "2025-02-12", end: "2025-02-12", time: "18:00–19:00" },
+      { title: "Elternabend Klavierschildkröten", start: "2025-02-13", end: "2025-02-13", time: "18:00–19:00" },
+      { title: "Elternrat", start: "2025-02-19", end: "2025-02-19", time: "18:00–19:00" },
+      { title: "Fasching", start: "2025-02-19", end: "2025-02-19", allDay: true },
+      { title: "Kita geschlossen! Konzepttag", start: "2025-02-21", end: "2025-02-21", allDay: true },
+      // ... (weitere Termine hier wie zuvor einfügen)
+      { title: "Kita geschlossen! Winterschließzeit", start: "2025-12-24", end: "2026-01-02", allDay: true }
+    ];
+
+    // Hilfsfunktionen
+    const monthNames = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+    function formatDate(d) {
+      return new Date(d).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
+    }
+    function formatDateForGoogle(d) {
+      return new Date(d).toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+    }
+
+    // iCal-Export
+    function createICS(ev) {
+      const start = ev.allDay ? `${ev.start}T000000` : `${ev.start}T${(ev.time||"00:00").split("–")[0].replace(":","")}00`;
+      const endDate = new Date(ev.end);
+      endDate.setHours(ev.allDay ? 23 : 23, ev.allDay ? 59 : 59);
+      const end = endDate.toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+      return `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kita//Kalender//DE
+BEGIN:VEVENT
+SUMMARY:${ev.title}
+DTSTART;TZID=Europe/Berlin:${start.replace("Z","")}
+DTEND;TZID=Europe/Berlin:${end.replace("Z","")}
+DESCRIPTION:🔔 Erinnerung: 2 Tage vor dem Termin
+BEGIN:VALARM
+TRIGGER:-P2D
+ACTION:DISPLAY
+DESCRIPTION:Erinnerung
+END:VALARM
+END:VEVENT
+END:VCALENDAR`;
+    }
+
+    // Google Link
+    function createGoogleLink(ev) {
+      const start = formatDateForGoogle(ev.start);
+      const endDate = new Date(ev.end);
+      endDate.setHours(23,59);
+      const end = formatDateForGoogle(endDate);
+      const text = encodeURIComponent(ev.title);
+      const details = encodeURIComponent("🔔 Erinnerung: 2 Tage vor dem Termin");
+      return `https://www.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${start}/${end}&ctz=Europe/Berlin&details=${details}`;
+    }
+
+    // Rendering
+    function renderEvents(filter="alle") {
+      const container = document.getElementById("eventContainer");
+      container.innerHTML = "";
+      let currentMonth = "";
+      const filtered = events.filter(ev => {
+        const t = ev.title.toLowerCase();
+        const belongs = ["klavierschildkröten","klangkobolde","trompetentiger","flötenfohlen","melodiezauberer","musikwichtel"]
+          .some(g => t.includes(g));
+        return filter==="alle" ||
+               t.includes(filter.toLowerCase()) ||
+               !belongs;
+      });
+      filtered.sort((a,b)=> new Date(a.start)-new Date(b.start));
+      filtered.forEach(ev => {
+        const mName = monthNames[new Date(ev.start).getMonth()];
+        if (mName!==currentMonth) {
+          currentMonth = mName;
+          const sec = document.createElement("div");
+          sec.className="month-section";
+          sec.innerHTML=`<h2>${mName}</h2>`;
+          container.appendChild(sec);
+        }
+        const card = document.createElement("div");
+        card.className="event-card";
+        const timeText = ev.allDay ? "ganztägig" : ev.time || "";
+        card.innerHTML = `
+          <div class="event-title">${ev.title}</div>
+          <div class="event-time">${formatDate(ev.start)} – ${formatDate(ev.end)} • ${timeText}</div>
+          <div class="event-actions">
+            <a href="data:text/calendar;charset=utf8,${encodeURIComponent(createICS(ev))}" download="${ev.title}.ics">📅 iCal</a>
+            <a class="google" href="${createGoogleLink(ev)}" target="_blank">📆 Google</a>
+          </div>`;
+        container.lastChild.appendChild(card);
+      });
+    }
+
+    renderEvents();
+
+    // Navigation / Filter
+    document.querySelectorAll("nav button").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        renderEvents(btn.dataset.group);
+      });
+    });
+  </script>
+</body>
+</html>
