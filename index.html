@@ -226,10 +226,12 @@ function buildGoogleUrl(ev){
     const startDate = new Date(ev.start + "T00:00:00");
     const endDate = new Date(ev.end + "T00:00:00");
 
-    // +1 Tag nur, wenn mehrtägiger Termin
-    endDate.setDate(endDate.getDate() + ((endDate - startDate) > 24*60*60*1000 ? 1 : 0));
+// +1 Tag nur, wenn Termin länger als 1 Tag dauert
+if ((endDate - startDate) > 24*60*60*1000) {
+  endDate.setDate(endDate.getDate() + 1);
+}
 
-    const endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
+const endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
 
     return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${startY}/${endY}&ctz=Europe/Berlin&details=${encodeURIComponent("Erinnerung: bitte 2 Tage vorher setzen")}`;
   } else {
