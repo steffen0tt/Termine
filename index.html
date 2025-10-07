@@ -158,11 +158,19 @@ function utcNowICS(){ return toICSDateTimeLocal(new Date().toISOString()); }
 function createVEvent(ev){
   const uid = `${Date.now()}-${Math.random().toString(36).slice(2,9)}@kitatermine.local`;
   const dtstamp = utcNowICS();
+  
   if(!ev.start.includes("T")){
     const startY = ev.start.replace(/-/g,"");
+    const startDate = new Date(ev.start + "T00:00:00");
     const endDate = new Date(ev.end + "T00:00:00");
-    endDate.setDate(endDate.getDate()+1); // letzten Tag inkl
+
+    // +1 Tag nur, wenn ganztägiger Termin länger als 1 Tag dauert
+    if ((endDate - startDate) > 24*60*60*1000) {
+      endDate.setDate(endDate.getDate() + 1);
+    }
+
     const endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
+
     return [
       "BEGIN:VEVENT",
       `UID:${uid}`,
@@ -177,6 +185,7 @@ function createVEvent(ev){
       "END:VALARM",
       "END:VEVENT"
     ].join("\r\n");
+
   } else {
     const dtStart = toICSDateTimeLocal(ev.start);
     const dtEnd = toICSDateTimeLocal(ev.end);
@@ -198,13 +207,16 @@ function createVEvent(ev){
 }
 
 /* build global ICS */
-function buildGlobalICS(){ return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Kita-Termine//DE","CALSCALE:GREGORIAN","METHOD:PUBLISH",events.map(createVEvent).join("\r\n"),"END:VCALENDAR"].join("\r\n"); }
+function buildGlobalICS(){ 
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Kita-Termine//DE","CALSCALE:GREGORIAN","METHOD:PUBLISH",events.map(createVEvent).join("\r\n"),"END:VCALENDAR"].join("\r\n"); 
+}
 
 /* per-event ICS data URL */
 function buildEventICSDataUrl(ev){ 
   const content = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Kita-Termine//DE",createVEvent(ev),"END:VCALENDAR"].join("\r\n");
   return "data:text/calendar;charset=utf-8," + encodeURIComponent(content);
 }
+
 
 /* Google link */
 function buildGoogleUrl(ev){
