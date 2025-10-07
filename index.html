@@ -211,9 +211,18 @@ function buildGoogleUrl(ev){
   if(!ev.start.includes("T")){
     // Ganztägiger Termin
     const startY = ev.start.replace(/-/g,"");
+    let endY;
 
-    // Google Calendar: End-Datum ist exklusiv, kein +1 nötig
-    const endY = ev.end.replace(/-/g,"");
+    const startDate = new Date(ev.start + "T00:00:00");
+    const endDate = new Date(ev.end + "T00:00:00");
+
+    // Prüfen, ob Termin länger als 1 Tag dauert
+    if (endDate - startDate > 24*60*60*1000) {
+        // Mehrtägiger ganztägiger Termin → +1 Tag hinzufügen
+        endDate.setDate(endDate.getDate() + 1);
+    }
+
+    endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
 
     return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${startY}/${endY}&ctz=Europe/Berlin&details=${encodeURIComponent("Erinnerung: bitte 2 Tage vorher setzen")}`;
   } else {
