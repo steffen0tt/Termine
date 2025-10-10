@@ -14,30 +14,30 @@
     --radius:14px;
     --padding:18px;
     --gap:16px;
-    --pastel-blue: #d8eefe;
-    --pastel-red: #ffd9d9;
-    --pastel-green: #e6f7ea;
-    --pastel-orange: #fff0da;
-    --pastel-purple: #f3e9ff;
+    --pastel-blue:#d8eefe;
+    --pastel-red:#ffd9d9;
+    --pastel-green:#e6f7ea;
+    --pastel-orange:#fff0da;
+    --pastel-purple:#f3e9ff;
   }
   *{box-sizing:border-box}
   body{
     margin:0;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
     background:var(--bg);
     color:var(--text);
   }
   header{
-    background: linear-gradient(90deg,#6fb1ff,#9bd1ff);
+    background:linear-gradient(90deg,#6fb1ff,#9bd1ff);
     padding:28px 16px;
     text-align:center;
     border-bottom-left-radius:18px;
     border-bottom-right-radius:18px;
     color:white;
   }
-  header h1{ margin:0; font-size:1.6rem; }
-  header p{ margin:10px 0 0; opacity:0.95; font-size:0.95rem; }
-  nav{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; }
+  header h1{margin:0;font-size:1.6rem;}
+  header p{margin:10px 0 0;opacity:0.95;font-size:0.95rem;}
+  nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;}
   .filter-btn{
     background:white;
     border-radius:999px;
@@ -45,45 +45,64 @@
     font-weight:700;
     border:1px solid rgba(0,0,0,0.06);
     cursor:pointer;
-    color:var(--text);
+    transition:all 0.2s ease;
   }
-  /* aktiv: dunkler Hintergrund + weißer Text */
   .filter-btn.active{
-    background:var(--accent);
-    color:#ffffff;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    background:#004a8f;
+    color:white;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
     transform:translateY(-2px);
   }
-  main{ max-width:1100px; margin:20px auto; padding:18px; }
-  .month { margin-bottom:26px; }
-  .month h2{ margin:6px 6px 12px; font-size:1.05rem; color:#233444; display:flex; align-items:center; gap:8px; }
-  .grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:var(--gap); }
-  .card{ background:var(--card); border-radius:var(--radius); padding:14px; box-shadow:0 6px 18px rgba(20,40,60,0.06); display:flex; flex-direction:column; gap:10px; transition:transform .14s ease; min-height:120px; }
-  .card:hover{ transform:translateY(-6px); box-shadow:0 14px 30px rgba(20,40,60,0.08); }
-  .row { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
-  .title{ font-weight:600; font-size:1rem; color:var(--text); }
-  .meta{ font-size:0.92rem; color:var(--muted); }
-  .time { font-weight:700; color:#223344; }
-  .pill{ padding:6px 10px; border-radius:999px; font-size:0.78rem; font-weight:600; display:inline-flex; gap:8px; align-items:center; }
-  .type-parents { background: var(--pastel-blue); color:#064b8b; }
-  .type-closed  { background: var(--pastel-red);  color:#8b1d1d; }
-  .type-party   { background: var(--pastel-green); color:#13522a; }
-  .type-info    { background: var(--pastel-orange); color:#6a3f00; }
-  .type-other   { background: var(--pastel-purple); color:#4b2a7a; }
-  .buttons{ margin-top:auto; display:flex; gap:8px; flex-wrap:wrap; }
-  .btn{ background:linear-gradient(180deg,#ffffff, #f6f8ff); border:1px solid rgba(0,0,0,0.06); padding:8px 12px; border-radius:10px; font-weight:600; font-size:0.9rem; color:var(--accent); text-decoration:none; display:inline-flex; gap:8px; align-items:center; }
-  .btn-ical{ background:linear-gradient(180deg,#fff,#f7fff8); color:#0a7a3f; border-color:rgba(10,122,63,0.12) }
-  .btn-google{ background:linear-gradient(180deg,#fff,#f2f6ff); color:#134f9c; border-color:rgba(19,79,156,0.12) }
-  .btn-outlook{ background:linear-gradient(180deg,#fff,#fffaf6); color:#a45a00; border-color:rgba(164,90,0,0.12) }
-  footer{ text-align:center; color:var(--muted); font-size:0.9rem; margin:28px auto 60px; }
-  @media (max-width:520px){ header h1{ font-size:1.2rem; } .card{ padding:12px; } main{ padding:12px; } }
+  main{max-width:1100px;margin:20px auto;padding:18px;}
+  .month{margin-bottom:26px;}
+  .month h2{margin:6px 6px 12px;font-size:1.05rem;color:#233444;display:flex;align-items:center;gap:8px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--gap);}
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:14px;
+    box-shadow:0 6px 18px rgba(20,40,60,0.06);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    transition:transform .14s ease;
+    min-height:120px;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 14px 30px rgba(20,40,60,0.08);}
+  .row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .title{font-weight:600;font-size:1rem;color:var(--text);}
+  .meta{font-size:0.92rem;color:var(--muted);}
+  .time{font-weight:700;color:#223344;}
+  .pill{padding:6px 10px;border-radius:999px;font-size:0.78rem;font-weight:600;display:inline-flex;gap:8px;align-items:center;}
+  .type-parents{background:var(--pastel-blue);color:#064b8b;}
+  .type-closed{background:var(--pastel-red);color:#8b1d1d;}
+  .type-party{background:var(--pastel-green);color:#13522a;}
+  .type-info{background:var(--pastel-orange);color:#6a3f00;}
+  .type-other{background:var(--pastel-purple);color:#4b2a7a;}
+  .buttons{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap;}
+  .btn{
+    background:linear-gradient(180deg,#ffffff,#f6f8ff);
+    border:1px solid rgba(0,0,0,0.06);
+    padding:8px 12px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:0.9rem;
+    color:var(--accent);
+    text-decoration:none;
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+  }
+  .btn-ical{background:linear-gradient(180deg,#fff,#f7fff8);color:#0a7a3f;border-color:rgba(10,122,63,0.12)}
+  .btn-google{background:linear-gradient(180deg,#fff,#f2f6ff);color:#134f9c;border-color:rgba(19,79,156,0.12)}
+  footer{text-align:center;color:var(--muted);font-size:0.9rem;margin:28px auto 60px;}
+  @media(max-width:520px){header h1{font-size:1.2rem}.card{padding:12px}main{padding:12px}}
 </style>
 </head>
 <body>
 <header>
   <h1>🧡 Finkenau Musikkindergarten - Termine 2026</h1>
-  
-  <nav id="filters" aria-label="Gruppen Filter" style="margin-top:14px">
+  <nav id="filters" aria-label="Gruppen Filter">
     <button class="filter-btn active" data-group="all">🌍 Alle</button>
     <button class="filter-btn" data-group="Klavierschildkröten">🐢 Klavierschildkröten</button>
     <button class="filter-btn" data-group="Klangkobolde">🧚 Klangkobolde</button>
@@ -138,64 +157,37 @@ const events = [
   { title: "Kita geschlossen! Winterschließzeit", start: "2026-12-24", end: "2027-01-01" }
 ];
 
-/* groups to filter by */
-const groups = ["Klavierschildkröten","Klangkobolde","Trompetentiger","Flötenfohlen","Melodiezauberer","Musikwichtel"];
+/* Gruppenfilter */
+const groups=["Klavierschildkröten","Klangkobolde","Trompetentiger","Flötenfohlen","Melodiezauberer","Musikwichtel"];
 
-/* helpers */
-function toDate(s){ return s.includes("T") ? new Date(s) : new Date(s + "T00:00:00"); }
-function monthKey(dt){ return dt.toLocaleString("de-DE",{ month:"long", year:"numeric" }); }
-events.sort((a,b)=> toDate(a.start) - toDate(b.start));
-const months = {};
-events.forEach(ev=>{
-  const key = monthKey(toDate(ev.start));
-  months[key] = months[key] || [];
-  months[key].push(ev);
-});
+function toDate(s){return s.includes("T")?new Date(s):new Date(s+"T00:00:00");}
+function monthKey(dt){return dt.toLocaleString("de-DE",{month:"long",year:"numeric"});}
+events.sort((a,b)=>toDate(a.start)-toDate(b.start));
+const months={};events.forEach(ev=>{const k=monthKey(toDate(ev.start));months[k]=months[k]||[];months[k].push(ev);});
 
-/* determine which groups an event applies to */
-function eventGroups(ev){
-  const title = ev.title.toLowerCase();
-  const matched = groups.filter(g => title.includes(g.toLowerCase()));
-  return matched.length ? matched : ["all"];
-}
+function eventGroups(ev){const title=ev.title.toLowerCase();const m=groups.filter(g=>title.includes(g.toLowerCase()));return m.length?m:["all"];}
 
-/* display formatting */
 function displayDateRange(ev){
-  const s = toDate(ev.start), e = toDate(ev.end);
-  if(s.toDateString() === e.toDateString()){
-    return s.toLocaleDateString("de-DE",{ weekday:"short", day:"2-digit", month:"2-digit", year:"numeric" });
-  } else {
-    const from = s.toLocaleDateString("de-DE",{ day:"2-digit", month:"2-digit", year:"numeric" });
-    const to = e.toLocaleDateString("de-DE",{ day:"2-digit", month:"2-digit", year:"numeric" });
-    return `${from} – ${to}`;
-  }
+  const s=toDate(ev.start),e=toDate(ev.end);
+  if(s.toDateString()===e.toDateString())return s.toLocaleDateString("de-DE",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"});
+  return `${s.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"})} – ${e.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"})}`;
 }
-function displayTime(ev){
-  if(ev.start.includes("T")){
-    return `${toDate(ev.start).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})} – ${toDate(ev.end).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})}`;
-  } else return "ganztägig";
-}
+function displayTime(ev){if(ev.start.includes("T"))return`${toDate(ev.start).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})} – ${toDate(ev.end).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})}`;return"ganztägig";}
 
-/* ICS helpers (Europe/Berlin) */
-function pad(n){ return n.toString().padStart(2,"0"); }
-function toICSDateTimeLocal(s){
-  if(!s.includes("T")) return s.replace(/-/g,"");
-  const d = new Date(s);
-  const y = d.getFullYear(), mo = pad(d.getMonth()+1), da = pad(d.getDate()), hh = pad(d.getHours()), mm = pad(d.getMinutes()), ss = pad(d.getSeconds());
-  return `${y}${mo}${da}T${hh}${mm}${ss}`;
-}
-function utcNowICS(){ return toICSDateTimeLocal(new Date().toISOString()); }
+function pad(n){return n.toString().padStart(2,"0");}
+function toICSDateTimeLocal(s){if(!s.includes("T"))return s.replace(/-/g,"");const d=new Date(s);return`${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;}
+function utcNowICS(){return toICSDateTimeLocal(new Date().toISOString());}
 
-/* create VEVENT with VALARM 2 days before */
 function createVEvent(ev){
-  const uid = `${Date.now()}-${Math.random().toString(36).slice(2,9)}@kitatermine.local`;
-  const dtstamp = utcNowICS();
+  const uid=`${Date.now()}-${Math.random().toString(36).slice(2,9)}@kitatermine.local`;
+  const dtstamp=utcNowICS();
+  const includeEndDayFully=ev.title.includes("Sommerschließzeit")||ev.title.includes("Winterschließzeit");
   if(!ev.start.includes("T")){
-    const startY = ev.start.replace(/-/g,"");
-    const endDate = new Date(ev.end + "T00:00:00"); endDate.setDate(endDate.getDate()+1);
-    const endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
-    // VALARM uses TRIGGER:-P2D relative to DTSTART for all-day events
-    return [
+    const startY=ev.start.replace(/-/g,"");
+    const endDate=new Date(ev.end+"T00:00:00");
+    if(!includeEndDayFully)endDate.setDate(endDate.getDate()+1);
+    const endY=endDate.toISOString().slice(0,10).replace(/-/g,"");
+    return[
       "BEGIN:VEVENT",
       `UID:${uid}`,
       `DTSTAMP:${dtstamp}`,
@@ -209,10 +201,10 @@ function createVEvent(ev){
       "END:VALARM",
       "END:VEVENT"
     ].join("\r\n");
-  } else {
-    const dtStart = toICSDateTimeLocal(ev.start);
-    const dtEnd = toICSDateTimeLocal(ev.end);
-    return [
+  }else{
+    const dtStart=toICSDateTimeLocal(ev.start);
+    const dtEnd=toICSDateTimeLocal(ev.end);
+    return[
       "BEGIN:VEVENT",
       `UID:${uid}`,
       `DTSTAMP:${dtstamp}`,
@@ -229,161 +221,71 @@ function createVEvent(ev){
   }
 }
 
-/* build global ICS */
-function buildGlobalICS(){
-  const vevents = events.map(createVEvent).join("\r\n");
-  return [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Kita-Termine//DE",
-    "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH",
-    vevents,
-    "END:VCALENDAR"
-  ].join("\r\n");
-}
-
-/* per-event ICS data URL */
 function buildEventICSDataUrl(ev){
-  const content = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Kita-Termine//DE",createVEvent(ev),"END:VCALENDAR"].join("\r\n");
-  return "data:text/calendar;charset=utf-8," + encodeURIComponent(content);
+  const c=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Kita-Termine//DE",createVEvent(ev),"END:VCALENDAR"].join("\r\n");
+  return"data:text/calendar;charset=utf-8,"+encodeURIComponent(c);
 }
-
-/* Google link - event creation (note: Google create-link can't reliably set reminders via URL;
-   recommend importing the provided .ics which contains a VALARM). See code comments and chat explanation.
-*/
 function buildGoogleUrl(ev){
   if(!ev.start.includes("T")){
-    const startY = ev.start.replace(/-/g,"");
-    const endDate = new Date(ev.end + "T00:00:00"); endDate.setDate(endDate.getDate()+1);
-    const endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
-    return `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(ev.title)}&dates=${startY}/${endY}&ctz=Europe/Berlin&details=${encodeURIComponent("Hinweis: Für eine automatische Erinnerung 2 Tage vorher bitte die iCal(.ics)-Datei importieren oder in den Erinnerungen 2 Tage vorher hinzufügen.")}`;
-  } else {
-    // Google eventedit expects YYYYMMDDTHHMMSSZ or local - we'll provide local in basic format
-    const s = toICSDateTimeLocal(ev.start);
-    const e = toICSDateTimeLocal(ev.end);
-    return `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(ev.title)}&dates=${s}/${e}&ctz=Europe/Berlin&details=${encodeURIComponent("Hinweis: Für eine automatische Erinnerung 2 Tage vorher bitte die iCal(.ics)-Datei importieren oder in den Erinnerungen 2 Tage vorher hinzufügen.")}`;
+    const s=ev.start.replace(/-/g,"");
+    const endDate=new Date(ev.end+"T00:00:00");endDate.setDate(endDate.getDate()+1);
+    const e=endDate.toISOString().slice(0,10).replace(/-/g,"");
+    return`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${s}/${e}&ctz=Europe/Berlin`;
   }
-}
-
-/* Outlook web compose link */
-function toISOForOutlook(s){
-  // returns ISO without milliseconds in form YYYY-MM-DDTHH:MM:SS
-  if(!s.includes("T")) return s; // all-day keep YYYY-MM-DD
-  const d = new Date(s);
-  const pad2 = n => n.toString().padStart(2,"0");
-  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+  const s=toDate(ev.start).toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+  const e=toDate(ev.end).toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+  return`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${s}/${e}&ctz=Europe/Berlin`;
 }
 function buildOutlookUrl(ev){
-  // Outlook web deeplink: https://outlook.live.com/calendar/0/deeplink/compose?subject=...&body=...&startdt=...&enddt=...
-  if(!ev.start.includes("T")){
-    const start = ev.start;
-    const endDate = new Date(ev.end + "T00:00:00"); endDate.setDate(endDate.getDate()+1);
-    const end = endDate.toISOString().slice(0,10);
-    return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(ev.title)}&startdt=${encodeURIComponent(start)}&enddt=${encodeURIComponent(end)}&body=${encodeURIComponent("Erinnerung: Dieses Event enthält eine .ics mit einem Alarm 2 Tage vorher — beim Import wird die Erinnerung übernommen.")}`;
-  } else {
-    const start = toISOForOutlook(ev.start);
-    const end = toISOForOutlook(ev.end);
-    return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(ev.title)}&startdt=${encodeURIComponent(start)}&enddt=${encodeURIComponent(end)}&body=${encodeURIComponent("Erinnerung: Dieses Event enthält eine .ics mit einem Alarm 2 Tage vorher — beim Import wird die Erinnerung übernommen.")}`;
-  }
+  const c=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Kita-Termine//DE",createVEvent(ev),"END:VCALENDAR"].join("\r\n");
+  return"data:text/calendar;charset=utf-8,"+encodeURIComponent(c);
 }
 
-/* type metadata for pills and colors */
-const typeMeta = {
-  parents: { label:"Elternabend", cls:"type-parents", emoji:"👩‍🏫" },
-  closed:  { label:"Kita geschlossen", cls:"type-closed",  emoji:"🚫" },
-  party:   { label:"Fest / Basteln", cls:"type-party",   emoji:"🎉" },
-  info:    { label:"Elternrat / Info", cls:"type-info",  emoji:"👥" },
-  other:   { label:"Sonstiges", cls:"type-other", emoji:"✨" }
-};
-
-/* auto-detect type by title */
-function detectType(title){
-  const t = title.toLowerCase();
-  if(t.includes("elternabend")) return "parents";
-  if(t.includes("kita geschlossen")||t.includes("sommerschließzeit")||t.includes("konzepttag")||t.includes("winterschließzeit")||t.includes("regenerationstag")||t.includes("betriebsausflug")||t.includes("tag der")) return "closed";
-  if(t.includes("fest")||t.includes("konzert")||t.includes("basteln")||t.includes("adventssingen")||t.includes("licht")||t.includes("sommerfest")||t.includes("verabschiedung")) return "party";
-  if(t.includes("elternrat")||t.includes("info")) return "info";
-  return "other";
-}
-
-/* RENDER */
-const main = document.getElementById("main");
-
-Object.keys(months).forEach(monthName => {
-  const section = document.createElement("section");
-  section.className = "month";
-  const h = document.createElement("h2");
-  h.innerHTML = `<span class="dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(1px)"></span> ${monthName.charAt(0).toUpperCase()+monthName.slice(1)}`;
-  section.appendChild(h);
-  const grid = document.createElement("div"); grid.className="grid";
-  months[monthName].forEach(ev=>{
-    const evGroups = eventGroups(ev);
-    const card = document.createElement("article"); card.className="card"; card.dataset.groups = evGroups.join(",");
-    const metaRow = document.createElement("div"); metaRow.className="row";
-    const left = document.createElement("div"); left.style.flex="1";
-    const title = document.createElement("div"); title.className="title"; title.textContent = ev.title;
-    const date = document.createElement("div"); date.className="meta"; date.textContent = displayDateRange(ev);
-    left.appendChild(title); left.appendChild(date);
-    const right = document.createElement("div"); right.style.textAlign="right";
-    const typ = detectType(ev.title);
-    const tm = typeMeta[typ] || typeMeta.other;
-    const pill = document.createElement("div"); pill.className = "pill " + tm.cls; pill.innerHTML = `<span style="font-size:1.05rem">${tm.emoji}</span> <span style="opacity:0.95">${tm.label}</span>`;
-    right.appendChild(pill);
-    metaRow.appendChild(left); metaRow.appendChild(right);
-    const timeRow = document.createElement("div"); timeRow.className="row";
-    const timeDiv = document.createElement("div"); timeDiv.className="time"; timeDiv.textContent = displayTime(ev);
-    timeRow.appendChild(timeDiv);
-    const buttons = document.createElement("div"); buttons.className="buttons";
-
-    // iCal download (contains VALARM TRIGGER:-P2D)
-    const aIcal = document.createElement("a"); aIcal.className="btn btn-ical"; aIcal.href = buildEventICSDataUrl(ev); aIcal.setAttribute("download", ev.title.replace(/[^\w\d\-_]+/g,"_") + ".ics"); aIcal.innerHTML="📅 iCal";
-    // Google (opens event creation); note: Google URL can't reliably set reminders -> import .ics to keep VALARM
-    const aGoogle = document.createElement("a"); aGoogle.className="btn btn-google"; aGoogle.href = buildGoogleUrl(ev); aGoogle.target="_blank"; aGoogle.rel="noopener noreferrer"; aGoogle.innerHTML="📆 Google";
-    // Outlook web compose (and desktop will import .ics where VALARM is respected)
-    const aOutlook = document.createElement("a"); aOutlook.className="btn btn-outlook"; aOutlook.href = buildOutlookUrl(ev); aOutlook.target="_blank"; aOutlook.rel="noopener noreferrer"; aOutlook.innerHTML="📧 Outlook";
-
-    buttons.appendChild(aIcal);
-    buttons.appendChild(aGoogle);
-    buttons.appendChild(aOutlook);
-
-    card.appendChild(metaRow); card.appendChild(timeRow); card.appendChild(buttons);
+/* Rendering */
+const main=document.getElementById("main");
+for(const [monthName,list]of Object.entries(months)){
+  const sec=document.createElement("section");
+  sec.className="month";
+  const h2=document.createElement("h2");
+  h2.textContent=monthName;
+  sec.appendChild(h2);
+  const grid=document.createElement("div");
+  grid.className="grid";
+  list.forEach(ev=>{
+    const card=document.createElement("div");
+    card.className="card";
+    const g=eventGroups(ev);
+    card.dataset.groups=g.join(",");
+    const type=ev.title.includes("geschlossen")?"closed":ev.title.includes("Elternabend")?"parents":ev.title.includes("fest")?"party":ev.title.includes("Info")?"info":"other";
+    const pill=document.createElement("span");
+    pill.className=`pill type-${type}`;
+    pill.textContent=type==="closed"?"🚫 geschlossen":type==="parents"?"👪 Eltern":type==="party"?"🎉 Fest":type==="info"?"ℹ️ Info":"📅 Termin";
+    const title=document.createElement("div");title.className="title";title.textContent=ev.title;
+    const date=document.createElement("div");date.className="meta";date.textContent=displayDateRange(ev);
+    const time=document.createElement("div");time.className="time";time.textContent=displayTime(ev);
+    const buttons=document.createElement("div");buttons.className="buttons";
+    const aIcal=document.createElement("a");aIcal.className="btn btn-ical";aIcal.href=buildEventICSDataUrl(ev);aIcal.setAttribute("download",ev.title.replace(/[^\w\d\-_]+/g,"_")+".ics");aIcal.textContent="📅 iCal";
+    const aGoogle=document.createElement("a");aGoogle.className="btn btn-google";aGoogle.href=buildGoogleUrl(ev);aGoogle.target="_blank";aGoogle.textContent="📆 Google";
+    const aOutlook=document.createElement("a");aOutlook.className="btn";aOutlook.href=buildOutlookUrl(ev);aOutlook.setAttribute("download",ev.title.replace(/[^\w\d\-_]+/g,"_")+"_outlook.ics");aOutlook.innerHTML="📨 Outlook";
+    buttons.appendChild(aIcal);buttons.appendChild(aGoogle);buttons.appendChild(aOutlook);
+    card.appendChild(pill);card.appendChild(title);card.appendChild(date);card.appendChild(time);card.appendChild(buttons);
     grid.appendChild(card);
   });
-  section.appendChild(grid);
-  main.appendChild(section);
-});
-
-/* filters */
-const filterButtons = document.querySelectorAll(".filter-btn");
-filterButtons.forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    filterButtons.forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    const g = btn.dataset.group;
-    filterByGroup(g);
-  });
-});
-
-function filterByGroup(group){
-  const cards = document.querySelectorAll(".card");
-  cards.forEach(c=>{
-    const gs = c.dataset.groups.split(",");
-    if(group==="all" || gs.includes("all") || gs.map(x=>x.toLowerCase()).includes(group.toLowerCase())){
-      c.style.display = "";
-    } else c.style.display = "none";
-  });
+  sec.appendChild(grid);
+  main.appendChild(sec);
 }
 
-/* global ICS download link (if you want to place one in the UI) */
-const globalICS = buildGlobalICS();
-const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(globalICS);
-// Example: if you add an <a id="feed-download"> element, below lines will enable it.
-// const feedLink = document.getElementById("feed-download");
-// if(feedLink){ feedLink.href = dataUrl; feedLink.setAttribute("download","kita_termine_2025.ics"); }
-
-/* final note about Google reminders */
-console.info("Hinweis: iCal-Dateien enthalten VALARM (2 Tage vorher). Google-Kalender-Links öffnen die Erstellungsseite; um eine automatische Erinnerung 2 Tage vorher zu erhalten, bitte die iCal(.ics)-Datei importieren oder in Google die Erinnerung manuell auf 2 Tage setzen.");
+/* Filterfunktion */
+const filterBtns=document.querySelectorAll(".filter-btn");
+filterBtns.forEach(btn=>btn.addEventListener("click",()=>{
+  filterBtns.forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  const g=btn.dataset.group;
+  document.querySelectorAll(".card").forEach(c=>{
+    if(g==="all"||c.dataset.groups.includes(g)){c.style.display="flex";}
+    else{c.style.display="none";}
+  });
+}));
 </script>
 </body>
 </html>
