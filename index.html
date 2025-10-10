@@ -38,8 +38,22 @@
   header h1{ margin:0; font-size:1.6rem; }
   header p{ margin:10px 0 0; opacity:0.95; font-size:0.95rem; }
   nav{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; }
-  .filter-btn{ background:white; border-radius:999px; padding:8px 12px; font-weight:700; border:1px solid rgba(0,0,0,0.06); cursor:pointer; }
-  .filter-btn.active{ box-shadow:0 6px 18px rgba(0,0,0,0.08); transform:translateY(-2px); }
+  .filter-btn{
+    background:white;
+    border-radius:999px;
+    padding:8px 12px;
+    font-weight:700;
+    border:1px solid rgba(0,0,0,0.06);
+    cursor:pointer;
+    color:var(--text);
+  }
+  /* aktiv: dunkler Hintergrund + weißer Text */
+  .filter-btn.active{
+    background:var(--accent);
+    color:#ffffff;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    transform:translateY(-2px);
+  }
   main{ max-width:1100px; margin:20px auto; padding:18px; }
   .month { margin-bottom:26px; }
   .month h2{ margin:6px 6px 12px; font-size:1.05rem; color:#233444; display:flex; align-items:center; gap:8px; }
@@ -60,6 +74,7 @@
   .btn{ background:linear-gradient(180deg,#ffffff, #f6f8ff); border:1px solid rgba(0,0,0,0.06); padding:8px 12px; border-radius:10px; font-weight:600; font-size:0.9rem; color:var(--accent); text-decoration:none; display:inline-flex; gap:8px; align-items:center; }
   .btn-ical{ background:linear-gradient(180deg,#fff,#f7fff8); color:#0a7a3f; border-color:rgba(10,122,63,0.12) }
   .btn-google{ background:linear-gradient(180deg,#fff,#f2f6ff); color:#134f9c; border-color:rgba(19,79,156,0.12) }
+  .btn-outlook{ background:linear-gradient(180deg,#fff,#fffaf6); color:#a45a00; border-color:rgba(164,90,0,0.12) }
   footer{ text-align:center; color:var(--muted); font-size:0.9rem; margin:28px auto 60px; }
   @media (max-width:520px){ header h1{ font-size:1.2rem; } .card{ padding:12px; } main{ padding:12px; } }
 </style>
@@ -234,19 +249,42 @@ function buildEventICSDataUrl(ev){
   return "data:text/calendar;charset=utf-8," + encodeURIComponent(content);
 }
 
-/* Google link - note: Google Calendar URL doesn't support setting reminders via parameters reliably.
-   We include ctz=Europe/Berlin and a note in details instructing users that a reminder is recommended.
+/* Google link - event creation (note: Google create-link can't reliably set reminders via URL;
+   recommend importing the provided .ics which contains a VALARM). See code comments and chat explanation.
 */
 function buildGoogleUrl(ev){
   if(!ev.start.includes("T")){
     const startY = ev.start.replace(/-/g,"");
     const endDate = new Date(ev.end + "T00:00:00"); endDate.setDate(endDate.getDate()+1);
     const endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
-    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${startY}/${endY}&ctz=Europe/Berlin&details=${encodeURIComponent("Erinnerung: bitte 2 Tage vorher setzen")}`;
+    return `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(ev.title)}&dates=${startY}/${endY}&ctz=Europe/Berlin&details=${encodeURIComponent("Hinweis: Für eine automatische Erinnerung 2 Tage vorher bitte die iCal(.ics)-Datei importieren oder in den Erinnerungen 2 Tage vorher hinzufügen.")}`;
   } else {
+    // Google eventedit expects YYYYMMDDTHHMMSSZ or local - we'll provide local in basic format
     const s = toICSDateTimeLocal(ev.start);
     const e = toICSDateTimeLocal(ev.end);
-    return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.title)}&dates=${s}/${e}&ctz=Europe/Berlin&details=${encodeURIComponent("Erinnerung: bitte 2 Tage vorher setzen")}`;
+    return `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(ev.title)}&dates=${s}/${e}&ctz=Europe/Berlin&details=${encodeURIComponent("Hinweis: Für eine automatische Erinnerung 2 Tage vorher bitte die iCal(.ics)-Datei importieren oder in den Erinnerungen 2 Tage vorher hinzufügen.")}`;
+  }
+}
+
+/* Outlook web compose link */
+function toISOForOutlook(s){
+  // returns ISO without milliseconds in form YYYY-MM-DDTHH:MM:SS
+  if(!s.includes("T")) return s; // all-day keep YYYY-MM-DD
+  const d = new Date(s);
+  const pad2 = n => n.toString().padStart(2,"0");
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+}
+function buildOutlookUrl(ev){
+  // Outlook web deeplink: https://outlook.live.com/calendar/0/deeplink/compose?subject=...&body=...&startdt=...&enddt=...
+  if(!ev.start.includes("T")){
+    const start = ev.start;
+    const endDate = new Date(ev.end + "T00:00:00"); endDate.setDate(endDate.getDate()+1);
+    const end = endDate.toISOString().slice(0,10);
+    return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(ev.title)}&startdt=${encodeURIComponent(start)}&enddt=${encodeURIComponent(end)}&body=${encodeURIComponent("Erinnerung: Dieses Event enthält eine .ics mit einem Alarm 2 Tage vorher — beim Import wird die Erinnerung übernommen.")}`;
+  } else {
+    const start = toISOForOutlook(ev.start);
+    const end = toISOForOutlook(ev.end);
+    return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(ev.title)}&startdt=${encodeURIComponent(start)}&enddt=${encodeURIComponent(end)}&body=${encodeURIComponent("Erinnerung: Dieses Event enthält eine .ics mit einem Alarm 2 Tage vorher — beim Import wird die Erinnerung übernommen.")}`;
   }
 }
 
@@ -297,9 +335,18 @@ Object.keys(months).forEach(monthName => {
     const timeDiv = document.createElement("div"); timeDiv.className="time"; timeDiv.textContent = displayTime(ev);
     timeRow.appendChild(timeDiv);
     const buttons = document.createElement("div"); buttons.className="buttons";
+
+    // iCal download (contains VALARM TRIGGER:-P2D)
     const aIcal = document.createElement("a"); aIcal.className="btn btn-ical"; aIcal.href = buildEventICSDataUrl(ev); aIcal.setAttribute("download", ev.title.replace(/[^\w\d\-_]+/g,"_") + ".ics"); aIcal.innerHTML="📅 iCal";
+    // Google (opens event creation); note: Google URL can't reliably set reminders -> import .ics to keep VALARM
     const aGoogle = document.createElement("a"); aGoogle.className="btn btn-google"; aGoogle.href = buildGoogleUrl(ev); aGoogle.target="_blank"; aGoogle.rel="noopener noreferrer"; aGoogle.innerHTML="📆 Google";
-    buttons.appendChild(aIcal); buttons.appendChild(aGoogle);
+    // Outlook web compose (and desktop will import .ics where VALARM is respected)
+    const aOutlook = document.createElement("a"); aOutlook.className="btn btn-outlook"; aOutlook.href = buildOutlookUrl(ev); aOutlook.target="_blank"; aOutlook.rel="noopener noreferrer"; aOutlook.innerHTML="📧 Outlook";
+
+    buttons.appendChild(aIcal);
+    buttons.appendChild(aGoogle);
+    buttons.appendChild(aOutlook);
+
     card.appendChild(metaRow); card.appendChild(timeRow); card.appendChild(buttons);
     grid.appendChild(card);
   });
@@ -328,15 +375,15 @@ function filterByGroup(group){
   });
 }
 
-/* global ICS download link */
+/* global ICS download link (if you want to place one in the UI) */
 const globalICS = buildGlobalICS();
 const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(globalICS);
-const feedLink = document.getElementById("feed-download");
-feedLink.href = dataUrl;
-feedLink.setAttribute("download","kita_termine_2025.ics");
+// Example: if you add an <a id="feed-download"> element, below lines will enable it.
+// const feedLink = document.getElementById("feed-download");
+// if(feedLink){ feedLink.href = dataUrl; feedLink.setAttribute("download","kita_termine_2025.ics"); }
 
 /* final note about Google reminders */
-console.info("Hinweis: iCal-Dateien enthalten VALARM (2 Tage vorher). Google-Kalender-Links enthalten 'ctz=Europe/Berlin' and an instruction in the details to set a reminder manually because Google URL parameters don't reliably set reminders.");
+console.info("Hinweis: iCal-Dateien enthalten VALARM (2 Tage vorher). Google-Kalender-Links öffnen die Erstellungsseite; um eine automatische Erinnerung 2 Tage vorher zu erhalten, bitte die iCal(.ics)-Datei importieren oder in Google die Erinnerung manuell auf 2 Tage setzen.");
 </script>
 </body>
 </html>
