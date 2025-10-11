@@ -1,394 +1,245 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Termine 2026 - Finkenau Musikkindergarten</title>
-<style>
-  :root{
-    --bg:#fbfbfd;
-    --card:#ffffff;
-    --text:#263238;
-    --muted:#61717a;
-    --accent:#0066c0;
-    --radius:14px;
-    --padding:18px;
-    --gap:16px;
-    --pastel-blue: #d8eefe;
-    --pastel-red: #ffd9d9;
-    --pastel-green: #e6f7ea;
-    --pastel-orange: #fff0da;
-    --pastel-purple: #f3e9ff;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background:var(--bg);
-    color:var(--text);
-  }
-  header{
-    background: linear-gradient(90deg,#6fb1ff,#9bd1ff);
-    padding:28px 16px;
-    text-align:center;
-    border-bottom-left-radius:18px;
-    border-bottom-right-radius:18px;
-    color:white;
-  }
-  header h1{ margin:0; font-size:1.6rem; }
-  header p{ margin:10px 0 0; opacity:0.95; font-size:0.95rem; }
-  nav{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; }
-  .filter-btn{
-    background:white;
-    border-radius:999px;
-    padding:8px 12px;
-    font-weight:700;
-    border:1px solid rgba(0,0,0,0.06);
-    cursor:pointer;
-    color:var(--text);
-  }
-  /* aktiv: dunkler Hintergrund + weißer Text */
-  .filter-btn.active{
-    background:var(--accent);
-    color:#ffffff;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
-    transform:translateY(-2px);
-  }
-  main{ max-width:1100px; margin:20px auto; padding:18px; }
-  .month { margin-bottom:26px; }
-  .month h2{ margin:6px 6px 12px; font-size:1.05rem; color:#233444; display:flex; align-items:center; gap:8px; }
-  .grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:var(--gap); }
-  .card{ background:var(--card); border-radius:var(--radius); padding:14px; box-shadow:0 6px 18px rgba(20,40,60,0.06); display:flex; flex-direction:column; gap:10px; transition:transform .14s ease; min-height:120px; }
-  .card:hover{ transform:translateY(-6px); box-shadow:0 14px 30px rgba(20,40,60,0.08); }
-  .row { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
-  .title{ font-weight:600; font-size:1rem; color:var(--text); }
-  .meta{ font-size:0.92rem; color:var(--muted); }
-  .time { font-weight:700; color:#223344; }
-  .pill{ padding:6px 10px; border-radius:999px; font-size:0.78rem; font-weight:600; display:inline-flex; gap:8px; align-items:center; }
-  .type-parents { background: var(--pastel-blue); color:#064b8b; }
-  .type-closed  { background: var(--pastel-red);  color:#8b1d1d; }
-  .type-party   { background: var(--pastel-green); color:#13522a; }
-  .type-info    { background: var(--pastel-orange); color:#6a3f00; }
-  .type-other   { background: var(--pastel-purple); color:#4b2a7a; }
-  .buttons{ margin-top:auto; display:flex; gap:8px; flex-wrap:wrap; }
-  .btn{ background:linear-gradient(180deg,#ffffff, #f6f8ff); border:1px solid rgba(0,0,0,0.06); padding:8px 12px; border-radius:10px; font-weight:600; font-size:0.9rem; color:var(--accent); text-decoration:none; display:inline-flex; gap:8px; align-items:center; }
-  .btn-ical{ background:linear-gradient(180deg,#fff,#f7fff8); color:#0a7a3f; border-color:rgba(10,122,63,0.12) }
-  .btn-google{ background:linear-gradient(180deg,#fff,#f2f6ff); color:#134f9c; border-color:rgba(19,79,156,0.12) }
-  .btn-outlook{ background:linear-gradient(180deg,#fff,#fffaf6); color:#a45a00; border-color:rgba(164,90,0,0.12) }
-  footer{ text-align:center; color:var(--muted); font-size:0.9rem; margin:28px auto 60px; }
-  @media (max-width:520px){ header h1{ font-size:1.2rem; } .card{ padding:12px; } main{ padding:12px; } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kita Finkenau – Termine 2026</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f8fafc;
+      margin: 0;
+      padding: 40px;
+      color: #222;
+    }
+    h1, h2, h3 {
+      text-align: center;
+    }
+    section {
+      margin-top: 40px;
+    }
+    .event {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 16px 20px;
+      margin: 10px auto;
+      max-width: 600px;
+    }
+    .title {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .date {
+      color: #444;
+      font-size: 0.95em;
+      margin-bottom: 4px;
+    }
+    .groups {
+      font-size: 0.85em;
+      color: #777;
+    }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #2563eb;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      margin: 4px;
+      transition: 0.2s;
+    }
+    .btn:hover {
+      background: #1e40af;
+    }
+    .btn-google { background: #34a853; }
+    .btn-outlook { background: #0078d4; }
+    .btn-ical { background: #f97316; }
+    .btn-zip { background: #0f172a; }
+    section.downloads {
+      text-align: center;
+      margin-top: 50px;
+    }
+  </style>
 </head>
 <body>
-<header>
-  <h1>Finkenau Musikkindergarten - Termine 2026</h1>
-  <p class="sub">Änderungen vorbehalten, Zeiten können abweichen, Aushänge bitte beachten</p>
-  <nav id="filters" aria-label="Gruppen Filter" style="margin-top:14px">
-    <button class="filter-btn active" data-group="all">🌍 Alle</button>
-    <button class="filter-btn" data-group="Klavierschildkröten">🐢 Klavierschildkröten</button>
-    <button class="filter-btn" data-group="Klangkobolde">🧚 Klangkobolde</button>
-    <button class="filter-btn" data-group="Trompetentiger">🐯 Trompetentiger</button>
-    <button class="filter-btn" data-group="Flötenfohlen">🐴 Flötenfohlen</button>
-    <button class="filter-btn" data-group="Melodiezauberer">✨ Melodiezauberer</button>
-    <button class="filter-btn" data-group="Musikwichtel">🎵 Musikwichtel</button>
-  </nav>
-</header>
+  <h1>Kita Finkenau – Termine 2026</h1>
+  <div id="events"></div>
 
-<main id="main"></main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script>
+    const groups = [
+      "Klavierschildkröten",
+      "Klangkobolde",
+      "Trompetentiger",
+      "Flötenfohlen",
+      "Melodiezauberer",
+      "Musikwichtel"
+    ];
 
-<footer>Stand: Oktober 2025 · Zeitzone: <strong>Europe/Berlin</strong></footer>
+    const events = [
+      { title: "Kita geschlossen! Sommerschließzeit", start: "2026-07-20", end: "2026-08-01" },
+      { title: "Kita geschlossen! Winterschließzeit", start: "2026-12-24", end: "2027-01-02" },
+      { title: "Elternabend Klavierschildkröten", start: "2026-03-10", end: "2026-03-11" },
+      { title: "Sommerfest (alle Gruppen)", start: "2026-06-15", end: "2026-06-16" },
+      { title: "Fototermin Klangkobolde", start: "2026-05-08", end: "2026-05-09" }
+    ];
 
-<script>
-const events = [
-  { title: "Neujahrskonzert Kita", start: "2026-01-24", end: "2026-01-24" },
-  { title: "Elternabend Flötenfohlen", start: "2026-02-04T18:00:00", end: "2026-02-04T19:00:00" },
-  { title: "Elternabend Trompetentiger", start: "2026-02-05T18:00:00", end: "2026-02-05T19:00:00" },
-  { title: "Elternabend Klangkobolde", start: "2026-02-11T18:00:00", end: "2026-02-11T19:00:00" },
-  { title: "Elternabend Klavierschildkröten", start: "2026-02-12T18:00:00", end: "2026-02-12T19:00:00" },
-  { title: "Elternrat", start: "2026-02-18T18:00:00", end: "2026-02-18T19:00:00" },
-  { title: "Fasching Kita", start: "2026-02-18", end: "2026-02-18" },
-  { title: "Kita geschlossen! Konzepttag", start: "2026-02-20", end: "2026-02-20" },
-  { title: "Elternabend Melodiezauberer", start: "2026-02-25T18:00:00", end: "2026-02-25T19:00:00" },
-  { title: "Elternabend Musikwichtel", start: "2026-02-26T18:00:00", end: "2026-02-26T19:00:00" },
-  { title: "Kita geschlossen! Konzepttag", start: "2026-04-13", end: "2026-04-13" },
-  { title: "Kita geschlossen! Regenerationstag", start: "2026-05-15", end: "2026-05-15" },
-  { title: "Elternrat", start: "2026-05-20T18:00:00", end: "2026-05-20T19:00:00" },
-  { title: "Kita geschlossen! Betriebsausflug", start: "2026-06-12", end: "2026-06-12" },
-  { title: "Verabschiedung Brückenjahr Kita", start: "2026-06-19", end: "2026-06-19" },
-  { title: "Sommerfest Kita (Betreuung bis 13 Uhr)", start: "2026-06-26", end: "2026-06-26" },
-  { title: "Kita geschlossen! Sommerschließzeit", start: "2026-07-20", end: "2026-08-01" },
-  { title: "Elternabend Flötenfohlen", start: "2026-09-02T18:00:00", end: "2026-09-02T19:00:00" },
-  { title: "Elternabend Trompetentiger", start: "2026-09-03T18:00:00", end: "2026-09-03T19:00:00" },
-  { title: "Elternabend Klavierschildkröten", start: "2026-09-09T18:00:00", end: "2026-09-09T19:00:00" },
-  { title: "Elternabend Melodiezauberer", start: "2026-09-10T18:00:00", end: "2026-09-10T19:00:00" },
-  { title: "Elternabend Musikwichtel", start: "2026-09-16T18:00:00", end: "2026-09-16T19:00:00" },
-  { title: "Elternabend Klangkobolde", start: "2026-09-17T18:00:00", end: "2026-09-17T19:00:00" },
-  { title: "Kita geschlossen! Tag der mittelbaren Pädagogik", start: "2026-09-26", end: "2026-09-26" },
-  { title: "Elternrat", start: "2026-09-30T18:00:00", end: "2026-09-30T19:00:00" },
-  { title: "Kita geschlossen! Regenerationstag", start: "2026-10-05", end: "2026-10-05" },
-  { title: "Herbstbasteln Trompetentiger", start: "2026-11-04T15:00:00", end: "2026-11-04T17:00:00" },
-  { title: "Herbstbasteln Klavierschildkröten", start: "2026-11-05T15:00:00", end: "2026-11-05T17:00:00" },
-  { title: "Info-Nachmittag Brückenjahr Kita", start: "2026-11-11T15:00:00", end: "2026-11-11T17:00:00" },
-  { title: "Herbstbasteln Flötenfohlen", start: "2026-11-12T15:00:00", end: "2026-11-12T17:00:00" },
-  { title: "Kita geschlossen! Tag der Hamburger Richtlinien", start: "2026-11-13", end: "2026-11-13" },
-  { title: "Lichterfest Kita", start: "2026-11-20", end: "2026-11-20" },
-  { title: "Adventssingen Musikwichtel & Trompetentiger", start: "2026-12-07T15:00:00", end: "2026-12-07T17:00:00" },
-  { title: "Adventssingen Klangkobolde & Klavierschildkröten", start: "2026-12-09T15:00:00", end: "2026-12-09T17:00:00" },
-  { title: "Adventssingen Melodiezauberer & Flötenfohlen", start: "2026-12-10T15:00:00", end: "2026-12-10T17:00:00" },
-  { title: "Kita geschlossen! Winterschließzeit", start: "2026-12-24", end: "2027-01-02" }
-];
+    function toDate(str){ return new Date(str + "T00:00:00"); }
 
-/* groups to filter by */
-const groups = ["Klavierschildkröten","Klangkobolde","Trompetentiger","Flötenfohlen","Melodiezauberer","Musikwichtel"];
+    function displayDateRange(ev){
+      const s = toDate(ev.start);
+      let e = toDate(ev.end);
+      if (ev.title.includes("Sommerschließzeit") || ev.title.includes("Winterschließzeit")) {
+        e = new Date(e);
+        e.setDate(e.getDate() - 1);
+      }
+      if (s.toDateString() === e.toDateString())
+        return s.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" });
+      return `${s.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" })} – ${e.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" })}`;
+    }
 
-/* helpers */
-function toDate(s){ return s.includes("T") ? new Date(s) : new Date(s + "T00:00:00"); }
-function monthKey(dt){ return dt.toLocaleString("de-DE",{ month:"long", year:"numeric" }); }
-events.sort((a,b)=> toDate(a.start) - toDate(b.start));
-const months = {};
-events.forEach(ev=>{
-  const key = monthKey(toDate(ev.start));
-  months[key] = months[key] || [];
-  months[key].push(ev);
-});
+    function eventGroups(ev){
+      const t = ev.title.toLowerCase();
+      const gs = [];
+      for (const g of groups) {
+        if (t.includes(g.toLowerCase())) gs.push(g);
+      }
+      if (t.includes("alle")) gs.push("all");
+      if (gs.length === 0) gs.push("all");
+      return gs;
+    }
 
-/* determine which groups an event applies to */
-function eventGroups(ev){
-  const title = ev.title.toLowerCase();
-  const matched = groups.filter(g => title.includes(g.toLowerCase()));
-  return matched.length ? matched : ["all"];
-}
+    function createVEvent(ev){
+      const uid = ev.title.replace(/\s+/g, "_") + "@" + ev.start;
+      return [
+        "BEGIN:VEVENT",
+        "UID:" + uid,
+        "SUMMARY:" + ev.title,
+        "DTSTART;VALUE=DATE:" + ev.start.replace(/-/g,""),
+        "DTEND;VALUE=DATE:" + ev.end.replace(/-/g,""),
+        "DESCRIPTION:Kita Finkenau Termin",
+        "BEGIN:VALARM",
+        "TRIGGER:-P2D",
+        "ACTION:DISPLAY",
+        "DESCRIPTION:Erinnerung: " + ev.title,
+        "END:VALARM",
+        "END:VEVENT"
+      ].join("\r\n");
+    }
 
-/* display formatting */
-function displayDateRange(ev){
-  const s = toDate(ev.start), e = toDate(ev.end);
+    function buildGroupICS(groupName) {
+      const groupEvents = events.filter(ev => {
+        const gs = eventGroups(ev);
+        return gs.includes("all") || gs.includes(groupName);
+      });
+      const vevents = groupEvents.map(createVEvent).join("\r\n");
+      return [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Kita-Finkenau//DE",
+        "CALSCALE:GREGORIAN",
+        "METHOD:PUBLISH",
+        vevents,
+        "END:VCALENDAR"
+      ].join("\r\n");
+    }
 
-  // Für Sommer- und Winterschließzeit einen Tag weniger anzeigen
-  if (ev.title.includes("Sommerschließzeit") || ev.title.includes("Winterschließzeit")) {
-    e = new Date(e);
-    e.setDate(e.getDate() - 1);
-  }
-    if(s.toDateString() === e.toDateString()){
-    return s.toLocaleDateString("de-DE",{ weekday:"short", day:"2-digit", month:"2-digit", year:"numeric" });
-  } else {
-    const from = s.toLocaleDateString("de-DE",{ day:"2-digit", month:"2-digit", year:"numeric" });
-    const to = e.toLocaleDateString("de-DE",{ day:"2-digit", month:"2-digit", year:"numeric" });
-    return `${from} – ${to}`;
-}
-function displayTime(ev){
-  if(ev.start.includes("T")){
-    return `${toDate(ev.start).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})} – ${toDate(ev.end).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})}`;
-  } else return "ganztägig";
-}
+    // Anzeige
+    const container = document.getElementById("events");
+    events.forEach(ev => {
+      const div = document.createElement("div");
+      div.className = "event";
+      div.innerHTML = `
+        <div class="title">${ev.title}</div>
+        <div class="date">${displayDateRange(ev)}</div>
+        <div class="groups">📘 ${eventGroups(ev).join(", ")}</div>
+      `;
+      container.appendChild(div);
+    });
 
-/* ICS helpers (Europe/Berlin) */
-function pad(n){ return n.toString().padStart(2,"0"); }
-function toICSDateTimeLocal(s){
-  if(!s.includes("T")) return s.replace(/-/g,"");
-  const d = new Date(s);
-  const y = d.getFullYear(), mo = pad(d.getMonth()+1), da = pad(d.getDate()), hh = pad(d.getHours()), mm = pad(d.getMinutes()), ss = pad(d.getSeconds());
-  return `${y}${mo}${da}T${hh}${mm}${ss}`;
-}
-function utcNowICS(){ return toICSDateTimeLocal(new Date().toISOString()); }
+    /* Kalender-Download- und Abo-Links */
+    const footerLinks = document.createElement("section");
+    footerLinks.className = "downloads";
 
-/* create VEVENT with VALARM 2 days before */
-function createVEvent(ev){
-  const uid = `${Date.now()}-${Math.random().toString(36).slice(2,9)}@kitatermine.local`;
-  const dtstamp = utcNowICS();
-  if(!ev.start.includes("T")){
-    const startY = ev.start.replace(/-/g,"");
-    const endDate = new Date(ev.end + "T00:00:00"); endDate.setDate(endDate.getDate()+1);
-    const endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
-    // VALARM uses TRIGGER:-P2D relative to DTSTART for all-day events
-    return [
-      "BEGIN:VEVENT",
-      `UID:${uid}`,
-      `DTSTAMP:${dtstamp}`,
-      `DTSTART;VALUE=DATE:${startY}`,
-      `DTEND;VALUE=DATE:${endY}`,
-      `SUMMARY:${ev.title}`,
-      "BEGIN:VALARM",
-      "TRIGGER:-P2D",
-      "ACTION:DISPLAY",
-      "DESCRIPTION:Erinnerung: Termin in 2 Tagen",
-      "END:VALARM",
-      "END:VEVENT"
-    ].join("\r\n");
-  } else {
-    const dtStart = toICSDateTimeLocal(ev.start);
-    const dtEnd = toICSDateTimeLocal(ev.end);
-    return [
-      "BEGIN:VEVENT",
-      `UID:${uid}`,
-      `DTSTAMP:${dtstamp}`,
-      `DTSTART;TZID=Europe/Berlin:${dtStart}`,
-      `DTEND;TZID=Europe/Berlin:${dtEnd}`,
-      `SUMMARY:${ev.title}`,
-      "BEGIN:VALARM",
-      "TRIGGER:-P2D",
-      "ACTION:DISPLAY",
-      "DESCRIPTION:Erinnerung: Termin in 2 Tagen",
-      "END:VALARM",
-      "END:VEVENT"
-    ].join("\r\n");
-  }
-}
+    const allLabel = document.createElement("h3");
+    allLabel.textContent = "📂 Kalender-Downloads & Abo-Links";
+    footerLinks.appendChild(allLabel);
 
-/* build global ICS */
-function buildGlobalICS(){
-  const vevents = events.map(createVEvent).join("\r\n");
-  return [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Kita-Termine//DE",
-    "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH",
-    vevents,
-    "END:VCALENDAR"
-  ].join("\r\n");
-}
+    const allGroups = ["all", ...groups];
+    const baseIcsUrl = "https://example.com/kita-ics/"; // ← anpassen
 
-/* per-event ICS data URL */
-function buildEventICSDataUrl(ev){
-  const content = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Kita-Termine//DE",createVEvent(ev),"END:VCALENDAR"].join("\r\n");
-  return "data:text/calendar;charset=utf-8," + encodeURIComponent(content);
-}
+    allGroups.forEach(g => {
+      const ics = buildGroupICS(g === "all" ? "all" : g);
+      const filename = (g === "all" ? "kita_termine_2026_alle" : `kita_termine_2026_${g.toLowerCase().replace(/ /g,"_")}`) + ".ics";
+      const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+      const fileUrl = baseIcsUrl + filename;
 
-/* Google link - event creation (note: Google create-link can't reliably set reminders via URL;
-   recommend importing the provided .ics which contains a VALARM). See code comments and chat explanation.
-*/
-function buildGoogleUrl(ev){
-  if(!ev.start.includes("T")){
-    const startY = ev.start.replace(/-/g,"");
-    const endDate = new Date(ev.end + "T00:00:00"); endDate.setDate(endDate.getDate()+1);
-    const endY = endDate.toISOString().slice(0,10).replace(/-/g,"");
-    return `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(ev.title)}&dates=${startY}/${endY}&ctz=Europe/Berlin&details=${encodeURIComponent("Hinweis: Für eine automatische Erinnerung 2 Tage vorher bitte die iCal(.ics)-Datei importieren oder in den Erinnerungen 2 Tage vorher hinzufügen.")}`;
-  } else {
-    // Google eventedit expects YYYYMMDDTHHMMSSZ or local - we'll provide local in basic format
-    const s = toICSDateTimeLocal(ev.start);
-    const e = toICSDateTimeLocal(ev.end);
-    return `https://calendar.google.com/calendar/r/eventedit?text=${encodeURIComponent(ev.title)}&dates=${s}/${e}&ctz=Europe/Berlin&details=${encodeURIComponent("Hinweis: Für eine automatische Erinnerung 2 Tage vorher bitte die iCal(.ics)-Datei importieren oder in den Erinnerungen 2 Tage vorher hinzufügen.")}`;
-  }
-}
+      const wrapper = document.createElement("div");
+      wrapper.style.margin = "16px auto";
+      wrapper.style.display = "inline-block";
+      wrapper.style.textAlign = "left";
+      wrapper.style.border = "1px solid rgba(0,0,0,0.05)";
+      wrapper.style.borderRadius = "12px";
+      wrapper.style.padding = "12px 20px";
+      wrapper.style.background = "white";
+      wrapper.style.boxShadow = "0 4px 10px rgba(0,0,0,0.05)";
 
-/* Outlook web compose link */
-function toISOForOutlook(s){
-  // returns ISO without milliseconds in form YYYY-MM-DDTHH:MM:SS
-  if(!s.includes("T")) return s; // all-day keep YYYY-MM-DD
-  const d = new Date(s);
-  const pad2 = n => n.toString().padStart(2,"0");
-  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
-}
-function buildOutlookUrl(ev){
-  // Outlook web deeplink: https://outlook.live.com/calendar/0/deeplink/compose?subject=...&body=...&startdt=...&enddt=...
-  if(!ev.start.includes("T")){
-    const start = ev.start;
-    const endDate = new Date(ev.end + "T00:00:00"); endDate.setDate(endDate.getDate()+1);
-    const end = endDate.toISOString().slice(0,10);
-    return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(ev.title)}&startdt=${encodeURIComponent(start)}&enddt=${encodeURIComponent(end)}&body=${encodeURIComponent("Erinnerung: Dieses Event enthält eine .ics mit einem Alarm 2 Tage vorher — beim Import wird die Erinnerung übernommen.")}`;
-  } else {
-    const start = toISOForOutlook(ev.start);
-    const end = toISOForOutlook(ev.end);
-    return `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(ev.title)}&startdt=${encodeURIComponent(start)}&enddt=${encodeURIComponent(end)}&body=${encodeURIComponent("Erinnerung: Dieses Event enthält eine .ics mit einem Alarm 2 Tage vorher — beim Import wird die Erinnerung übernommen.")}`;
-  }
-}
+      const title = document.createElement("div");
+      title.style.fontWeight = "700";
+      title.style.marginBottom = "8px";
+      title.textContent = g === "all" ? "🌍 Alle Gruppen" : `📅 ${g}`;
+      wrapper.appendChild(title);
 
-/* type metadata for pills and colors */
-const typeMeta = {
-  parents: { label:"Elternabend", cls:"type-parents", emoji:"👩‍🏫" },
-  closed:  { label:"Kita geschlossen", cls:"type-closed",  emoji:"🚫" },
-  party:   { label:"Fest / Basteln", cls:"type-party",   emoji:"🎉" },
-  info:    { label:"Elternrat / Info", cls:"type-info",  emoji:"👥" },
-  other:   { label:"Sonstiges", cls:"type-other", emoji:"✨" }
-};
+      const btnIcal = document.createElement("a");
+      btnIcal.href = dataUrl;
+      btnIcal.download = filename;
+      btnIcal.className = "btn btn-ical";
+      btnIcal.textContent = "💾 iCal herunterladen";
+      btnIcal.style.display = "block";
+      btnIcal.style.marginBottom = "4px";
+      wrapper.appendChild(btnIcal);
 
-/* auto-detect type by title */
-function detectType(title){
-  const t = title.toLowerCase();
-  if(t.includes("elternabend")) return "parents";
-  if(t.includes("kita geschlossen")||t.includes("sommerschließzeit")||t.includes("konzepttag")||t.includes("winterschließzeit")||t.includes("regenerationstag")||t.includes("betriebsausflug")||t.includes("tag der")) return "closed";
-  if(t.includes("fest")||t.includes("konzert")||t.includes("basteln")||t.includes("adventssingen")||t.includes("licht")||t.includes("sommerfest")||t.includes("verabschiedung")) return "party";
-  if(t.includes("elternrat")||t.includes("info")) return "info";
-  return "other";
-}
+      const btnGoogle = document.createElement("a");
+      btnGoogle.href = `https://calendar.google.com/calendar/u/0/r?cid=${encodeURIComponent(fileUrl)}`;
+      btnGoogle.target = "_blank";
+      btnGoogle.className = "btn btn-google";
+      btnGoogle.textContent = "🌐 In Google Kalender abonnieren";
+      btnGoogle.style.display = "block";
+      btnGoogle.style.marginBottom = "4px";
+      wrapper.appendChild(btnGoogle);
 
-/* RENDER */
-const main = document.getElementById("main");
+      const btnOutlook = document.createElement("a");
+      btnOutlook.href = `https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addsubscription&url=${encodeURIComponent(fileUrl)}&name=${encodeURIComponent("Kita " + (g === "all" ? "Alle Gruppen" : g))}`;
+      btnOutlook.target = "_blank";
+      btnOutlook.className = "btn btn-outlook";
+      btnOutlook.textContent = "📅 In Outlook abonnieren";
+      btnOutlook.style.display = "block";
+      wrapper.appendChild(btnOutlook);
 
-Object.keys(months).forEach(monthName => {
-  const section = document.createElement("section");
-  section.className = "month";
-  const h = document.createElement("h2");
-  h.innerHTML = `<span class="dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(1px)"></span> ${monthName.charAt(0).toUpperCase()+monthName.slice(1)}`;
-  section.appendChild(h);
-  const grid = document.createElement("div"); grid.className="grid";
-  months[monthName].forEach(ev=>{
-    const evGroups = eventGroups(ev);
-    const card = document.createElement("article"); card.className="card"; card.dataset.groups = evGroups.join(",");
-    const metaRow = document.createElement("div"); metaRow.className="row";
-    const left = document.createElement("div"); left.style.flex="1";
-    const title = document.createElement("div"); title.className="title"; title.textContent = ev.title;
-    const date = document.createElement("div"); date.className="meta"; date.textContent = displayDateRange(ev);
-    left.appendChild(title); left.appendChild(date);
-    const right = document.createElement("div"); right.style.textAlign="right";
-    const typ = detectType(ev.title);
-    const tm = typeMeta[typ] || typeMeta.other;
-    const pill = document.createElement("div"); pill.className = "pill " + tm.cls; pill.innerHTML = `<span style="font-size:1.05rem">${tm.emoji}</span> <span style="opacity:0.95">${tm.label}</span>`;
-    right.appendChild(pill);
-    metaRow.appendChild(left); metaRow.appendChild(right);
-    const timeRow = document.createElement("div"); timeRow.className="row";
-    const timeDiv = document.createElement("div"); timeDiv.className="time"; timeDiv.textContent = displayTime(ev);
-    timeRow.appendChild(timeDiv);
-    const buttons = document.createElement("div"); buttons.className="buttons";
+      footerLinks.appendChild(wrapper);
+    });
 
-    // iCal download (contains VALARM TRIGGER:-P2D)
-    const aIcal = document.createElement("a"); aIcal.className="btn btn-ical"; aIcal.href = buildEventICSDataUrl(ev); aIcal.setAttribute("download", ev.title.replace(/[^\w\d\-_]+/g,"_") + ".ics"); aIcal.innerHTML="📅 iCal";
-    // Google (opens event creation); note: Google URL can't reliably set reminders -> import .ics to keep VALARM
-    const aGoogle = document.createElement("a"); aGoogle.className="btn btn-google"; aGoogle.href = buildGoogleUrl(ev); aGoogle.target="_blank"; aGoogle.rel="noopener noreferrer"; aGoogle.innerHTML="📆 Google";
-    // Outlook web compose (and desktop will import .ics where VALARM is respected)
-    const aOutlook = document.createElement("a"); aOutlook.className="btn btn-outlook"; aOutlook.href = buildOutlookUrl(ev); aOutlook.target="_blank"; aOutlook.rel="noopener noreferrer"; aOutlook.innerHTML="📧 Outlook";
+    // ZIP-Export-Button
+    const zipBtn = document.createElement("button");
+    zipBtn.textContent = "📦 Alle ICS-Dateien als ZIP herunterladen";
+    zipBtn.className = "btn btn-zip";
+    zipBtn.style.marginTop = "30px";
+    zipBtn.onclick = async () => {
+      const zip = new JSZip();
+      allGroups.forEach(g => {
+        const ics = buildGroupICS(g === "all" ? "all" : g);
+        const filename = (g === "all" ? "kita_termine_2026_alle" : `kita_termine_2026_${g.toLowerCase().replace(/ /g,"_")}`) + ".ics";
+        zip.file(filename, ics);
+      });
+      const blob = await zip.generateAsync({ type: "blob" });
+      saveAs(blob, "kita_termine_2026_ics.zip");
+    };
+    footerLinks.appendChild(zipBtn);
 
-    buttons.appendChild(aIcal);
-    buttons.appendChild(aGoogle);
-    buttons.appendChild(aOutlook);
-
-    card.appendChild(metaRow); card.appendChild(timeRow); card.appendChild(buttons);
-    grid.appendChild(card);
-  });
-  section.appendChild(grid);
-  main.appendChild(section);
-});
-
-/* filters */
-const filterButtons = document.querySelectorAll(".filter-btn");
-filterButtons.forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    filterButtons.forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    const g = btn.dataset.group;
-    filterByGroup(g);
-  });
-});
-
-function filterByGroup(group){
-  const cards = document.querySelectorAll(".card");
-  cards.forEach(c=>{
-    const gs = c.dataset.groups.split(",");
-    if(group==="all" || gs.includes("all") || gs.map(x=>x.toLowerCase()).includes(group.toLowerCase())){
-      c.style.display = "";
-    } else c.style.display = "none";
-  });
-}
-
-/* global ICS download link (if you want to place one in the UI) */
-const globalICS = buildGlobalICS();
-const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(globalICS);
-// Example: if you add an <a id="feed-download"> element, below lines will enable it.
-// const feedLink = document.getElementById("feed-download");
-// if(feedLink){ feedLink.href = dataUrl; feedLink.setAttribute("download","kita_termine_2025.ics"); }
-
-/* final note about Google reminders */
-console.info("Hinweis: iCal-Dateien enthalten VALARM (2 Tage vorher). Google-Kalender-Links öffnen die Erstellungsseite; um eine automatische Erinnerung 2 Tage vorher zu erhalten, bitte die iCal(.ics)-Datei importieren oder in Google die Erinnerung manuell auf 2 Tage setzen.");
-</script>
+    document.body.appendChild(footerLinks);
+  </script>
 </body>
 </html>
