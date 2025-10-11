@@ -83,6 +83,9 @@
 <header>
   <h1>Finkenau Musikkindergarten - Termine 2026</h1>
   <p class="sub">Änderungen vorbehalten, Zeiten können abweichen, Aushänge bitte beachten</p>
+    <div style="margin-top:12px">
+    <a id="feed-download" href="#" style="color:rgba(255,255,255,0.95); text-decoration:underline; margin-right:16px;">📥 Alle Termine als iCal</a>
+  </div>
   <nav id="filters" aria-label="Gruppen Filter" style="margin-top:14px">
     <button class="filter-btn active" data-group="all">🌍 Alle</button>
     <button class="filter-btn" data-group="Klavierschildkröten">🐢 Klavierschildkröten</button>
@@ -380,29 +383,10 @@ const globalICS = buildGlobalICS();
 const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(globalICS);
 // Example: if you add an <a id="feed-download"> element, below lines will enable it.
 // const feedLink = document.getElementById("feed-download");
-// if(feedLink){ feedLink.href = dataUrl; feedLink.setAttribute("download","kita_termine_2025.ics"); }
+// if(feedLink){ feedLink.href = dataUrl; feedLink.setAttribute("download","kita_termine_2026.ics"); }
 
 /* final note about Google reminders */
 console.info("Hinweis: iCal-Dateien enthalten VALARM (2 Tage vorher). Google-Kalender-Links öffnen die Erstellungsseite; um eine automatische Erinnerung 2 Tage vorher zu erhalten, bitte die iCal(.ics)-Datei importieren oder in Google die Erinnerung manuell auf 2 Tage setzen.");
-
-     /* Buttons zum Herunterladen der .ics-Dateien für jede Gruppe */
-    const footerLinks = document.getElementById("downloads");
-    const allLabel = document.createElement("h3");
-    allLabel.textContent = "📂 Kalender-Downloads";
-    footerLinks.appendChild(allLabel);
-
-    const allGroups = ["all", ...groups];
-    allGroups.forEach(g => {
-      const ics = buildGroupICS(g === "all" ? "all" : g);
-      const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
-      const a = document.createElement("a");
-      a.href = dataUrl;
-      a.download = (g === "all" ? "kita_termine_2026_alle" : `kita_termine_2026_${g.toLowerCase().replace(/ /g,"_")}`) + ".ics";
-      a.className = "btn btn-ical";
-      a.style.margin = "6px";
-      a.textContent = (g === "all" ? "🌍 Alle Termine (iCal)" : `📅 ${g}`);
-      footerLinks.appendChild(a);
-    });
 
 </script>
 </body>
