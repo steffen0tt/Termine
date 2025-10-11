@@ -384,6 +384,26 @@ const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(globalI
 
 /* final note about Google reminders */
 console.info("Hinweis: iCal-Dateien enthalten VALARM (2 Tage vorher). Google-Kalender-Links öffnen die Erstellungsseite; um eine automatische Erinnerung 2 Tage vorher zu erhalten, bitte die iCal(.ics)-Datei importieren oder in Google die Erinnerung manuell auf 2 Tage setzen.");
+
+     /* Buttons zum Herunterladen der .ics-Dateien für jede Gruppe */
+    const footerLinks = document.getElementById("downloads");
+    const allLabel = document.createElement("h3");
+    allLabel.textContent = "📂 Kalender-Downloads";
+    footerLinks.appendChild(allLabel);
+
+    const allGroups = ["all", ...groups];
+    allGroups.forEach(g => {
+      const ics = buildGroupICS(g === "all" ? "all" : g);
+      const dataUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = (g === "all" ? "kita_termine_2026_alle" : `kita_termine_2026_${g.toLowerCase().replace(/ /g,"_")}`) + ".ics";
+      a.className = "btn btn-ical";
+      a.style.margin = "6px";
+      a.textContent = (g === "all" ? "🌍 Alle Termine (iCal)" : `📅 ${g}`);
+      footerLinks.appendChild(a);
+    });
+
 </script>
 </body>
 </html>
