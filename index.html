@@ -161,14 +161,17 @@ function eventGroups(ev){
 
 /* display formatting */
 function displayDateRange(ev){
-  const s = toDate(ev.start), e = toDate(ev.end);
-  if(s.toDateString() === e.toDateString()){
-    return s.toLocaleDateString("de-DE",{ weekday:"short", day:"2-digit", month:"2-digit", year:"numeric" });
-  } else {
-    const from = s.toLocaleDateString("de-DE",{ day:"2-digit", month:"2-digit", year:"numeric" });
-    const to = e.toLocaleDateString("de-DE",{ day:"2-digit", month:"2-digit", year:"numeric" });
-    return `${from} – ${to}`;
+  const s = toDate(ev.start);
+  let e = toDate(ev.end);
+  // Für Sommer- und Winterschließzeit einen Tag weniger anzeigen
+  if (ev.title.includes("Sommerschließzeit") || ev.title.includes("Winterschließzeit")) {
+    e = new Date(e);
+    e.setDate(e.getDate() - 1);
   }
+  if (s.toDateString() === e.toDateString())
+    return s.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" });
+  return `${s.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" })} – ${e.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" })}`;
+}
 }
 function displayTime(ev){
   if(ev.start.includes("T")){
