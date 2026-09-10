@@ -42,7 +42,7 @@ speichern, `git add events.json`, `git commit -m "Termine aktualisiert"`,
 - **Mit Uhrzeit** (z. B. Elternabend): `"YYYY-MM-DDTHH:MM:SS"`.
 - **Gruppe**: wird automatisch erkannt, wenn der Gruppenname
   (Klavierschildkröten, Klangkobolde, Trompetentiger, Flötenfohlen,
-  Melodiezauberer, Musikwichtel) irgendwo im `title` vorkommt. Kein
+  Melodiemäuse, Musikwichtel) irgendwo im `title` vorkommt. Kein
   Gruppenname im Titel → Termin gilt für alle ("Alle"-Filter).
 - **Typ/Farbe** (Elternabend, Kita geschlossen, Fest, Elternrat/Info,
   Sonstiges) wird ebenfalls automatisch an Schlüsselwörtern im Titel
