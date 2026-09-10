@@ -64,7 +64,7 @@
   }
   main{ max-width:1100px; margin:20px auto; padding:18px; }
   .month { margin-bottom:26px; }
-  .month h2{ margin:6px 6px 12px; font-size:1.05rem; color:#233444; display:flex; align-items:center; gap:8px; }
+  .month h2{ margin:10px 6px 14px; font-size:1.4rem; font-weight:800; color:#233444; display:flex; align-items:center; gap:10px; }
   .grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:var(--gap); }
   .card{ background:var(--card); border-radius:var(--radius); padding:14px; box-shadow:0 6px 18px rgba(20,40,60,0.06); display:flex; flex-direction:column; gap:10px; transition:transform .14s ease; min-height:120px; }
   .card:hover{ transform:translateY(-6px); box-shadow:0 14px 30px rgba(20,40,60,0.08); }
@@ -87,7 +87,7 @@
   @media (max-width:520px){ header h1{ font-size:1.2rem; } .card{ padding:12px; } main{ padding:12px; } }
 
   .upcoming{ max-width:1100px; margin:22px auto 0; padding:0 18px; }
-  .upcoming h2{ margin:0 0 10px; font-size:1rem; color:#233444; }
+  .upcoming h2{ margin:0 0 12px; font-size:1.4rem; font-weight:800; color:#233444; }
   .upcoming-scroll{ display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; -webkit-overflow-scrolling:touch; }
   .upcoming-chip{ flex:0 0 220px; background:var(--card); border-radius:12px; padding:12px 14px; box-shadow:0 6px 18px rgba(20,40,60,0.06); text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:4px; scroll-snap-align:start; transition:box-shadow .14s ease; }
   .upcoming-chip:hover{ box-shadow:0 10px 26px rgba(20,40,60,0.1); }
@@ -412,7 +412,7 @@ function renderMonthGrid(container, events, extraCardClass){
     const section = document.createElement("section");
     section.className = "month";
     const h = document.createElement("h2");
-    h.innerHTML = `<span class="dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(1px)"></span> ${monthName.charAt(0).toUpperCase()+monthName.slice(1)}`;
+    h.innerHTML = `<span class="dot" style="width:12px;height:12px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(1px)"></span> ${monthName.charAt(0).toUpperCase()+monthName.slice(1)}`;
     section.appendChild(h);
     const grid = document.createElement("div"); grid.className="grid";
     months[monthName].forEach(ev=>{
