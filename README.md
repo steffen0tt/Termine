@@ -97,6 +97,7 @@ und dann `http://localhost:8000` im Browser öffnen.
 
 ## Was wurde geändert (Sep 2026)
 
+**iCal-Bug + Datenstruktur:**
 - **Bug behoben**: Der Link "Alle Termine als iCal herunterladen" im Footer
   war tot (auf `#`, der Code dafür war auskommentiert). Er lädt jetzt
   tatsächlich eine `.ics`-Datei mit allen Terminen herunter.
@@ -108,6 +109,25 @@ und dann `http://localhost:8000` im Browser öffnen.
 - **Kleinere Code-Aufräumarbeiten**: doppelter Code bei der Datumsformatierung
   reduziert, `detectType`/`createVEvent` vereinheitlicht, IDs der iCal-Events
   deterministischer statt zufällig.
+
+**Navigation & Design (2. Runde):**
+- **Direkt zu aktuellen Terminen**: Die Seite berechnet beim Laden anhand des
+  heutigen Datums, was schon vorbei ist. Vergangene Termine werden nicht mehr
+  oben angezeigt, sondern in einem eingeklappten Bereich "Vergangene Termine
+  (N) anzeigen" ganz unten (dort leicht ausgegraut) – man landet also direkt
+  bei den kommenden Terminen, ohne durch Monate alte Einträge zu scrollen.
+- **"Nächste Termine"-Leiste**: oben unter dem Header eine kompakte,
+  horizontal scrollbare Übersicht der nächsten 4 anstehenden Termine mit
+  Klick-Sprung zur vollständigen Karte weiter unten.
+- **"Heute" / "Morgen" / "in N Tagen"-Hinweis**: Termine in den nächsten 7
+  Tagen bekommen ein kleines blaues Badge, damit man auf einen Blick sieht,
+  was bald ansteht.
+- **Mobile Navigation verschlankt**: Die Gruppen-Filter scrollen auf
+  schmalen Bildschirmen horizontal in einer Zeile statt in vier Zeilen
+  umzubrechen; der Seitentitel bricht nicht mehr mitten im Wort um.
+- **Kompaktere Karten**: Die drei Buttons (iCal/Google/Outlook) sind zu
+  einem einzigen "🗓️ Kalender"-Dropdown zusammengefasst, das sich beim Klick
+  öffnet – spart auf jeder Karte deutlich Platz.
 
 ## Ideen für später (nicht umgesetzt)
 
@@ -125,3 +145,7 @@ und dann `http://localhost:8000` im Browser öffnen.
 - **Datenstand im Footer**: "Stand: Oktober 2025" ist ein manuell gepflegter
   Text – leicht zu vergessen bei Änderungen. Könnte durch einen Hinweis auf
   das letzte `git`-Commit-Datum ersetzt oder ganz entfernt werden.
+- **iCal-Sammel-Download prominenter platzieren**: liegt aktuell weiterhin
+  im Footer; könnte stattdessen als sichtbarer Button im Header stehen, da
+  er jetzt funktioniert und der praktischste Weg ist, alle Termine auf
+  einmal zu abonnieren.

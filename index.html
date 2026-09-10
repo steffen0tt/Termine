@@ -36,8 +36,12 @@
     color:white;
   }
   header h1{ margin:0; font-size:1.6rem; }
+  .year-badge{ margin-top:4px; font-weight:700; font-size:1rem; opacity:.92; letter-spacing:.02em; }
   header p{ margin:10px 0 0; opacity:0.95; font-size:0.95rem; }
-  nav{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px; }
+  nav{ display:flex; gap:8px; margin-top:14px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:thin; padding:2px 2px 8px; }
+  nav::-webkit-scrollbar{ height:6px; }
+  nav::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.5); border-radius:99px; }
+  @media (min-width:700px){ nav{ flex-wrap:wrap; justify-content:center; overflow-x:visible; padding-bottom:0; } }
   .filter-btn{
     background:white;
     border-radius:999px;
@@ -46,6 +50,9 @@
     border:1px solid rgba(0,0,0,0.06);
     cursor:pointer;
     color:var(--text);
+    flex:0 0 auto;
+    white-space:nowrap;
+    scroll-snap-align:start;
   }
   /* aktiv: dunkler Hintergrund + weißer Text */
   .filter-btn.active{
@@ -77,11 +84,37 @@
   .btn-outlook{ background:linear-gradient(180deg,#fff,#fffaf6); color:#a45a00; border-color:rgba(164,90,0,0.12) }
   footer{ text-align:center; color:var(--muted); font-size:0.9rem; margin:28px auto 60px; }
   @media (max-width:520px){ header h1{ font-size:1.2rem; } .card{ padding:12px; } main{ padding:12px; } }
+
+  .upcoming{ max-width:1100px; margin:22px auto 0; padding:0 18px; }
+  .upcoming h2{ margin:0 0 10px; font-size:1rem; color:#233444; }
+  .upcoming-scroll{ display:flex; gap:12px; overflow-x:auto; padding-bottom:8px; -webkit-overflow-scrolling:touch; }
+  .upcoming-chip{ flex:0 0 220px; background:var(--card); border-radius:12px; padding:12px 14px; box-shadow:0 6px 18px rgba(20,40,60,0.06); text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:4px; scroll-snap-align:start; transition:box-shadow .14s ease; }
+  .upcoming-chip:hover{ box-shadow:0 10px 26px rgba(20,40,60,0.1); }
+  .uc-when{ font-weight:700; color:var(--accent); font-size:.82rem; }
+  .uc-title{ font-weight:600; font-size:.92rem; }
+  .uc-time{ font-size:.82rem; color:var(--muted); }
+  .badge-soon{ display:inline-block; margin-left:6px; padding:2px 8px; border-radius:999px; background:var(--accent); color:#fff; font-size:.72rem; font-weight:700; vertical-align:middle; }
+  .cal-menu{ margin-top:auto; position:relative; width:fit-content; }
+  .cal-menu > summary{ list-style:none; cursor:pointer; }
+  .cal-menu > summary::-webkit-details-marker{ display:none; }
+  .cal-menu[open] > summary{ background:var(--accent); color:#fff; border-color:var(--accent); }
+  .cal-menu-list{ position:absolute; z-index:5; top:calc(100% + 6px); left:0; display:flex; flex-direction:column; gap:6px; background:var(--card); padding:8px; border-radius:12px; box-shadow:0 10px 30px rgba(20,40,60,0.18); min-width:160px; }
+  .cal-menu-list .btn{ width:100%; }
+  .past-section{ max-width:1100px; margin:36px auto 10px; padding:0 18px; }
+  .past-section > summary{ cursor:pointer; list-style:none; font-weight:700; color:var(--muted); padding:10px 16px; background:#fff; border-radius:999px; width:fit-content; box-shadow:0 4px 14px rgba(20,40,60,0.05); }
+  .past-section > summary::-webkit-details-marker{ display:none; }
+  .past-section > summary::before{ content:"▸ "; }
+  .past-section[open] > summary::before{ content:"▾ "; }
+  .past-section #past-main{ margin-top:16px; }
+  .card.past{ opacity:.55; }
+  .card.past:hover{ opacity:.85; }
+  @media (max-width:520px){ .upcoming-chip{ flex-basis:180px; } }
 </style>
 </head>
 <body>
 <header>
-  <h1>Finkenau Musikkindergarten - Termine 2026</h1>
+  <h1>Finkenau Musikkindergarten</h1>
+  <div class="year-badge">Termine 2026</div>
   <p class="sub">Änderungen vorbehalten, Zeiten können abweichen, Aushänge bitte beachten</p>
   <nav id="filters" aria-label="Gruppen Filter" style="margin-top:14px">
     <button class="filter-btn active" data-group="all">🌍 Alle</button>
@@ -94,7 +127,14 @@
   </nav>
 </header>
 
+<div id="upcoming-wrap"></div>
+
 <main id="main"></main>
+
+<details id="past-section" class="past-section" hidden>
+  <summary id="past-summary">Vergangene Termine anzeigen</summary>
+  <div id="past-main"></div>
+</details>
 
 <footer>
       <div style="margin-top:12px">
@@ -136,6 +176,10 @@
    Termin loeschen: das Objekt in events.json entfernen.
    Termin aendern: Werte in events.json anpassen.
 
+   Vergangene vs. kommende Termine: die Seite berechnet das immer
+   anhand des aktuellen Datums im Browser - dafuer muss nichts in
+   events.json gepflegt werden.
+
    Tipp zum Testen auf dem eigenen Rechner: Doppelklick auf
    index.html funktioniert NICHT (Browser blockieren das Laden
    lokaler JSON-Dateien per file://). Im Ordner stattdessen z.B.
@@ -144,6 +188,7 @@
    ============================================================ */
 
 const EVENTS_URL = "events.json";
+const UPCOMING_COUNT = 4;
 
 /* groups to filter by */
 const groups = ["Klavierschildkröten","Klangkobolde","Trompetentiger","Flötenfohlen","Melodiezauberer","Musikwichtel"];
@@ -152,6 +197,26 @@ const groups = ["Klavierschildkröten","Klangkobolde","Trompetentiger","Flötenf
 function toDate(s){ return s.includes("T") ? new Date(s) : new Date(s + "T00:00:00"); }
 function monthKey(dt){ return dt.toLocaleString("de-DE",{ month:"long", year:"numeric" }); }
 function pad(n){ return n.toString().padStart(2,"0"); }
+
+/* ein Termin gilt als "vergangen", sobald sein Ende (bei ganztaegigen:
+   Ende des End-Tages) in der Vergangenheit liegt */
+function isPast(ev){
+  const e = toDate(ev.end);
+  if(!ev.end.includes("T")) e.setHours(23,59,59,999);
+  return e.getTime() < Date.now();
+}
+
+/* "Heute" / "Morgen" / "in 3 Tagen" - nur fuer Termine in den naechsten 7 Tagen */
+function relativeLabel(ev){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const startDay = toDate(ev.start); startDay.setHours(0,0,0,0);
+  const diffDays = Math.round((startDay - today) / 86400000);
+  if(diffDays < 0) return null;
+  if(diffDays === 0) return "Heute";
+  if(diffDays === 1) return "Morgen";
+  if(diffDays <= 7) return `in ${diffDays} Tagen`;
+  return null;
+}
 
 /* validate a single event; returns an error string or null if OK */
 function validateEvent(ev, idx){
@@ -278,6 +343,107 @@ function detectType(ev){
   return "other";
 }
 
+/* baut die Kalender-Buttons (iCal/Google/Outlook) als Dropdown, statt drei
+   einzelne Buttons auf jeder Karte zu zeigen (kompakter) */
+function buildCalMenu(ev, idx){
+  const details = document.createElement("details"); details.className = "cal-menu";
+  const summary = document.createElement("summary"); summary.className = "btn btn-cal-toggle"; summary.innerHTML = "🗓️ Kalender";
+  details.appendChild(summary);
+  const list = document.createElement("div"); list.className = "cal-menu-list";
+
+  const aIcal = document.createElement("a"); aIcal.className="btn btn-ical"; aIcal.href = buildEventICSDataUrl(ev, idx); aIcal.setAttribute("download", ev.title.replace(/[^\w\d\-_]+/g,"_") + ".ics"); aIcal.innerHTML="📅 iCal";
+  const aGoogle = document.createElement("a"); aGoogle.className="btn btn-google"; aGoogle.href = buildGoogleUrl(ev); aGoogle.target="_blank"; aGoogle.rel="noopener noreferrer"; aGoogle.innerHTML="📆 Google";
+  const aOutlook = document.createElement("a"); aOutlook.className="btn btn-outlook"; aOutlook.href = buildOutlookUrl(ev); aOutlook.target="_blank"; aOutlook.rel="noopener noreferrer"; aOutlook.innerHTML="📧 Outlook";
+  list.appendChild(aIcal); list.appendChild(aGoogle); list.appendChild(aOutlook);
+  details.appendChild(list);
+  return details;
+}
+
+/* baut eine einzelne Termin-Karte */
+function buildCard(ev, idx, extraClass){
+  const evGroups = eventGroups(ev);
+  const card = document.createElement("article");
+  card.className = "card" + (extraClass ? " " + extraClass : "");
+  card.id = ev.__id;
+  card.dataset.groups = evGroups.join(",");
+
+  const metaRow = document.createElement("div"); metaRow.className="row";
+  const left = document.createElement("div"); left.style.flex="1";
+  const title = document.createElement("div"); title.className="title"; title.textContent = ev.title;
+  const date = document.createElement("div"); date.className="meta";
+  date.textContent = displayDateRange(ev);
+  const soon = relativeLabel(ev);
+  if(soon){
+    const b = document.createElement("span"); b.className="badge-soon"; b.textContent = soon;
+    date.appendChild(document.createTextNode(" "));
+    date.appendChild(b);
+  }
+  left.appendChild(title); left.appendChild(date);
+
+  const right = document.createElement("div"); right.style.textAlign="right";
+  const typ = detectType(ev);
+  const tm = typeMeta[typ] || typeMeta.other;
+  const pill = document.createElement("div"); pill.className = "pill " + tm.cls; pill.innerHTML = `<span style="font-size:1.05rem">${tm.emoji}</span> <span style="opacity:0.95">${tm.label}</span>`;
+  right.appendChild(pill);
+  metaRow.appendChild(left); metaRow.appendChild(right);
+
+  const timeRow = document.createElement("div"); timeRow.className="row";
+  const timeDiv = document.createElement("div"); timeDiv.className="time"; timeDiv.textContent = displayTime(ev);
+  timeRow.appendChild(timeDiv);
+
+  card.appendChild(metaRow);
+  card.appendChild(timeRow);
+  card.appendChild(buildCalMenu(ev, idx));
+  return card;
+}
+
+/* gruppiert Termine nach Monat und rendert sie in "container" */
+function renderMonthGrid(container, events, extraCardClass){
+  container.innerHTML = "";
+  const months = {};
+  events.forEach(ev=>{
+    const key = monthKey(toDate(ev.start));
+    months[key] = months[key] || [];
+    months[key].push(ev);
+  });
+  Object.keys(months).forEach(monthName => {
+    const section = document.createElement("section");
+    section.className = "month";
+    const h = document.createElement("h2");
+    h.innerHTML = `<span class="dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(1px)"></span> ${monthName.charAt(0).toUpperCase()+monthName.slice(1)}`;
+    section.appendChild(h);
+    const grid = document.createElement("div"); grid.className="grid";
+    months[monthName].forEach(ev=>{
+      grid.appendChild(buildCard(ev, ev.__idx, extraCardClass));
+    });
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
+}
+
+/* kompakte, horizontal scrollbare Liste der naechsten anstehenden Termine
+   ganz oben, damit man nicht erst an vergangenen Terminen vorbeiscrollen muss */
+function renderUpcomingStrip(upcoming){
+  const wrap = document.getElementById("upcoming-wrap");
+  if(!upcoming.length){ wrap.innerHTML = ""; return; }
+  const section = document.createElement("section"); section.className = "upcoming";
+  const h = document.createElement("h2"); h.textContent = "Nächste Termine";
+  section.appendChild(h);
+  const scroller = document.createElement("div"); scroller.className = "upcoming-scroll";
+  upcoming.slice(0, UPCOMING_COUNT).forEach(ev=>{
+    const a = document.createElement("a"); a.className = "upcoming-chip"; a.href = "#" + ev.__id;
+    const when = document.createElement("div"); when.className = "uc-when";
+    when.textContent = relativeLabel(ev) || displayDateRange(ev);
+    const title = document.createElement("div"); title.className = "uc-title"; title.textContent = ev.title;
+    const time = document.createElement("div"); time.className = "uc-time"; time.textContent = displayTime(ev);
+    a.appendChild(when); a.appendChild(title); a.appendChild(time);
+    scroller.appendChild(a);
+  });
+  section.appendChild(scroller);
+  wrap.innerHTML = "";
+  wrap.appendChild(section);
+}
+
 /* RENDER */
 function renderError(message){
   const main = document.getElementById("main");
@@ -287,59 +453,26 @@ function renderError(message){
 }
 
 function renderEvents(events){
-  const main = document.getElementById("main");
-  main.innerHTML = "";
   events.sort((a,b)=> toDate(a.start) - toDate(b.start));
-  const months = {};
-  events.forEach(ev=>{
-    const key = monthKey(toDate(ev.start));
-    months[key] = months[key] || [];
-    months[key].push(ev);
-  });
+  events.forEach((ev,i)=>{ ev.__id = "ev-" + i; ev.__idx = i; });
 
-  Object.keys(months).forEach(monthName => {
-    const section = document.createElement("section");
-    section.className = "month";
-    const h = document.createElement("h2");
-    h.innerHTML = `<span class="dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(1px)"></span> ${monthName.charAt(0).toUpperCase()+monthName.slice(1)}`;
-    section.appendChild(h);
-    const grid = document.createElement("div"); grid.className="grid";
-    months[monthName].forEach((ev)=>{
-      const globalIdx = events.indexOf(ev);
-      const evGroups = eventGroups(ev);
-      const card = document.createElement("article"); card.className="card"; card.dataset.groups = evGroups.join(",");
-      const metaRow = document.createElement("div"); metaRow.className="row";
-      const left = document.createElement("div"); left.style.flex="1";
-      const title = document.createElement("div"); title.className="title"; title.textContent = ev.title;
-      const date = document.createElement("div"); date.className="meta"; date.textContent = displayDateRange(ev);
-      left.appendChild(title); left.appendChild(date);
-      const right = document.createElement("div"); right.style.textAlign="right";
-      const typ = detectType(ev);
-      const tm = typeMeta[typ] || typeMeta.other;
-      const pill = document.createElement("div"); pill.className = "pill " + tm.cls; pill.innerHTML = `<span style="font-size:1.05rem">${tm.emoji}</span> <span style="opacity:0.95">${tm.label}</span>`;
-      right.appendChild(pill);
-      metaRow.appendChild(left); metaRow.appendChild(right);
-      const timeRow = document.createElement("div"); timeRow.className="row";
-      const timeDiv = document.createElement("div"); timeDiv.className="time"; timeDiv.textContent = displayTime(ev);
-      timeRow.appendChild(timeDiv);
-      const buttons = document.createElement("div"); buttons.className="buttons";
+  const upcoming = events.filter(ev => !isPast(ev));
+  const past = events.filter(isPast);
 
-      const aIcal = document.createElement("a"); aIcal.className="btn btn-ical"; aIcal.href = buildEventICSDataUrl(ev, globalIdx); aIcal.setAttribute("download", ev.title.replace(/[^\w\d\-_]+/g,"_") + ".ics"); aIcal.innerHTML="📅 iCal";
-      const aGoogle = document.createElement("a"); aGoogle.className="btn btn-google"; aGoogle.href = buildGoogleUrl(ev); aGoogle.target="_blank"; aGoogle.rel="noopener noreferrer"; aGoogle.innerHTML="📆 Google";
-      const aOutlook = document.createElement("a"); aOutlook.className="btn btn-outlook"; aOutlook.href = buildOutlookUrl(ev); aOutlook.target="_blank"; aOutlook.rel="noopener noreferrer"; aOutlook.innerHTML="📧 Outlook";
+  renderUpcomingStrip(upcoming);
+  renderMonthGrid(document.getElementById("main"), upcoming);
 
-      buttons.appendChild(aIcal);
-      buttons.appendChild(aGoogle);
-      buttons.appendChild(aOutlook);
+  const pastSection = document.getElementById("past-section");
+  const pastSummary = document.getElementById("past-summary");
+  if(past.length){
+    pastSummary.textContent = `Vergangene Termine (${past.length}) anzeigen`;
+    renderMonthGrid(document.getElementById("past-main"), past, "past");
+    pastSection.hidden = false;
+  } else {
+    pastSection.hidden = true;
+  }
 
-      card.appendChild(metaRow); card.appendChild(timeRow); card.appendChild(buttons);
-      grid.appendChild(card);
-    });
-    section.appendChild(grid);
-    main.appendChild(section);
-  });
-
-  /* Sammel-Download: alle Termine als eine .ics-Datei (behebt den Bug: Link war vorher tot) */
+  /* Sammel-Download: alle Termine (vergangen + kommend) als eine .ics-Datei */
   const feedLink = document.getElementById("feed-download");
   if(feedLink){
     const globalICS = buildGlobalICS(events);
@@ -368,6 +501,13 @@ function filterByGroup(group){
     } else c.style.display = "none";
   });
 }
+
+/* Kalender-Dropdowns schliessen, wenn irgendwo anders hingeklickt wird */
+document.addEventListener("click", (e)=>{
+  document.querySelectorAll("details.cal-menu[open]").forEach(d=>{
+    if(!d.contains(e.target)) d.removeAttribute("open");
+  });
+});
 
 /* LOAD: Termine aus events.json holen, validieren, rendern */
 setupFilters();
