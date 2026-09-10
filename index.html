@@ -28,16 +28,17 @@
     color:var(--text);
   }
   header{
-    background: linear-gradient(90deg,#6fb1ff,#9bd1ff);
-    padding:28px 16px;
+    position:relative;
+    overflow:hidden;
+    background: linear-gradient(100deg,#6fb1ff,#9bd1ff);
+    padding:30px 16px 34px;
     text-align:center;
-    border-bottom-left-radius:18px;
-    border-bottom-right-radius:18px;
     color:white;
   }
-  header h1{ margin:0; font-size:1.6rem; }
-  .year-badge{ margin-top:4px; font-weight:700; font-size:1rem; opacity:.92; letter-spacing:.02em; }
+  header h1{ margin:0; font-size:1.65rem; font-weight:800; }
+  .year-badge{ display:inline-block; margin-top:8px; padding:4px 14px; border-radius:999px; background:rgba(255,255,255,0.25); font-weight:700; font-size:0.9rem; letter-spacing:.02em; }
   header p{ margin:10px 0 0; opacity:0.95; font-size:0.95rem; }
+  header .wave{ position:absolute; bottom:-1px; left:0; width:100%; line-height:0; }
   nav{ display:flex; gap:8px; margin-top:14px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:thin; padding:2px 2px 8px; }
   nav::-webkit-scrollbar{ height:6px; }
   nav::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.5); border-radius:99px; }
@@ -125,6 +126,7 @@
     <button class="filter-btn" data-group="Melodiezauberer">✨ Melodiezauberer</button>
     <button class="filter-btn" data-group="Musikwichtel">🎵 Musikwichtel</button>
   </nav>
+  <svg class="wave" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path fill="#fbfbfd" d="M0,20 C480,0 960,40 1440,10 L1440,40 L0,40 Z"></path></svg>
 </header>
 
 <div id="upcoming-wrap"></div>
