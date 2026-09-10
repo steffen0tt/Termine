@@ -115,7 +115,7 @@
 <body>
 <header>
   <h1>Finkenau Musikkindergarten</h1>
-  <div class="year-badge">Termine 2026</div>
+  <div class="year-badge" id="year-badge">Termine 2026</div>
   <p class="sub">Änderungen vorbehalten, Zeiten können abweichen, Aushänge bitte beachten</p>
   <nav id="filters" aria-label="Gruppen Filter" style="margin-top:14px">
     <button class="filter-btn active" data-group="all">🌍 Alle</button>
@@ -454,9 +454,21 @@ function renderError(message){
   </div>`;
 }
 
+function updateYearLabel(events){
+  if(!events.length) return;
+  const years = events.map(ev => toDate(ev.start).getFullYear());
+  const minY = Math.min(...years), maxY = Math.max(...years);
+  const label = minY === maxY ? `Termine ${minY}` : `Termine ${minY}–${maxY}`;
+  const badge = document.getElementById("year-badge");
+  if(badge) badge.textContent = label;
+  document.title = label + " - Finkenau Musikkindergarten";
+  return { minY, maxY };
+}
+
 function renderEvents(events){
   events.sort((a,b)=> toDate(a.start) - toDate(b.start));
   events.forEach((ev,i)=>{ ev.__id = "ev-" + i; ev.__idx = i; });
+  const yearRange = updateYearLabel(events);
 
   const upcoming = events.filter(ev => !isPast(ev));
   const past = events.filter(isPast);
@@ -479,7 +491,8 @@ function renderEvents(events){
   if(feedLink){
     const globalICS = buildGlobalICS(events);
     feedLink.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(globalICS);
-    feedLink.setAttribute("download", "kita_termine_2026.ics");
+    const fname = yearRange ? `kita_termine_${yearRange.minY}${yearRange.minY!==yearRange.maxY ? "-"+yearRange.maxY : ""}.ics` : "kita_termine.ics";
+    feedLink.setAttribute("download", fname);
   }
 }
 
